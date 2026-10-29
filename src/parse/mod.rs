@@ -10,11 +10,23 @@ use crate::{
 };
 
 #[derive(Debug)]
-pub struct ParseError {}
+pub enum ParseError {
+    UnexpectedToken {
+        expected: TokenKind,
+        found: TokenKind,
+    },
+    UnexpectedEof,
+}
 
 impl fmt::Display for ParseError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "Parser error")?;
+        match self {
+            Self::UnexpectedEof => write!(f, "Parser error - Unexpected end of file",)?,
+            Self::UnexpectedToken { expected, found } => write!(
+                f,
+                "Parser error - Expected token {expected:?}, but found token {found:?}"
+            )?,
+        };
         Ok(())
     }
 }
@@ -48,8 +60,11 @@ impl Parser {
     fn expect(&mut self, expected: TokenKind) -> Result<Token, ParseError> {
         match self.peek() {
             token if token.kind() == expected => Ok(self.advance()),
-            token if token.kind() == TokenKind::Eof => Err(ParseError {}),
-            _ => Err(ParseError {}),
+            token if token.kind() == TokenKind::Eof => Err(ParseError::UnexpectedEof),
+            token => Err(ParseError::UnexpectedToken {
+                expected: expected,
+                found: token.kind(),
+            }),
         }
     }
     fn eat(&mut self, token_type: TokenKind) -> bool {
@@ -63,20 +78,24 @@ impl Parser {
     fn advance(&mut self) -> Token {
         self.lex.next().unwrap_or(Token::Eof)
     }
-    pub fn parse(&mut self) -> ParserResult<Program> {
-        self.parse_program()
+    pub fn parse(&mut self) -> Program {
+        match self.parse_program() {
+            Ok(p) => {
+                return p;
+            }
+            Err(e) => {
+                panic!("{}", e);
+            }
+        }
     }
     fn parse_program(&mut self) -> ParserResult<Program> {
         let mut statements = Vec::new();
-        loop {
-            if let Ok(stmt) = self.parse_stmt() {
-                statements.push(stmt);
-            } else {
-                break;
-            }
+
+        while self.peek().kind() != TokenKind::Eof {
+            statements.push(self.parse_stmt()?);
         }
-        let p = Program { statements };
-        return Ok(p);
+
+        Ok(Program { statements })
     }
     fn parse_stmt(&mut self) -> ParserResult<Statement> {
         match self.peek() {
@@ -105,11 +124,15 @@ impl Parser {
         return Ok(left);
     }
 
-    fn parse_primary(&mut self) -> Result<Expr, ParseError> {
+    fn parse_primary(&mut self) -> ParserResult<Expr> {
         match self.advance() {
             Token::Int(value) => Ok(Expr::Int(value)),
-            Token::Eof => Err(ParseError {}),
-            _ => Err(ParseError {}),
+
+            Token::Eof => Err(ParseError::UnexpectedEof),
+            token => Err(ParseError::UnexpectedToken {
+                expected: TokenKind::Int,
+                found: token.kind(),
+            }),
         }
     }
 }

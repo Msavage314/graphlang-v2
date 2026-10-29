@@ -1,7 +1,7 @@
 use core::iter::Peekable;
 use std::vec::IntoIter;
 
-#[derive(PartialEq)]
+#[derive(PartialEq, Debug)]
 pub enum TokenKind {
     Int,
     Identifier,
