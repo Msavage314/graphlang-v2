@@ -127,7 +127,7 @@ impl Parser {
     fn parse_primary(&mut self) -> ParserResult<Expr> {
         match self.advance() {
             Token::Int(value) => Ok(Expr::Int(value)),
-
+            Token::Identifier(ident) => Ok(Expr::Identifier(ident)),
             Token::Eof => Err(ParseError::UnexpectedEof),
             token => Err(ParseError::UnexpectedToken {
                 expected: TokenKind::Int,

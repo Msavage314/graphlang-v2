@@ -11,6 +11,7 @@ pub enum Statement {
 #[derive(Debug)]
 pub enum Expr {
     Int(isize),
+    Identifier(String),
     Binary {
         left: Box<Expr>,
         op: BinaryOp,
