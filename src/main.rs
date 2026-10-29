@@ -1,8 +1,8 @@
 mod lex;
-
+mod parse;
 use std::{env::args, fs, io::Error};
 
-use crate::lex::Lexer;
+use crate::{lex::Lexer, parse::Parser};
 
 const honey_jar: &'static str = "
 ┌\x1b[4m───────\x1b[0m┐
@@ -20,11 +20,8 @@ fn main() -> Result<(), Error> {
             .get(1)
             .expect("Pass in a filename with `cargo run -- <filename>`"),
     )?;
-    let lex = Lexer::new(contents);
-    for token in lex {
-        println!("{token:?}");
-    }
+    let parse = Parser::from_string(contents);
 
-    print!("{}", 1);
+    println!("{honey_jar}");
     Ok(())
 }

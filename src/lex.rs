@@ -1,7 +1,7 @@
 use core::iter::Peekable;
 use std::vec::IntoIter;
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Eq)]
 pub enum Token {
     Int(isize),
     Identifier(String),
@@ -12,6 +12,8 @@ pub enum Token {
     Minus,
     Mul,
     Div,
+
+    Eof,
 }
 
 /// Iterator over tokens in a given input file
@@ -21,9 +23,17 @@ pub struct Lexer {
     position: usize,
 }
 impl Lexer {
-    pub fn new(text: String) -> Self {
+    pub fn new<T>(text: T) -> Self
+    where
+        T: ToString,
+    {
         return Self {
-            text: text.chars().collect::<Vec<char>>().into_iter().peekable(),
+            text: text
+                .to_string()
+                .chars()
+                .collect::<Vec<char>>()
+                .into_iter()
+                .peekable(),
             position: 0,
         };
     }
@@ -87,5 +97,52 @@ impl Iterator for Lexer {
     type Item = Token;
     fn next(&mut self) -> Option<Self::Item> {
         return self.next_token();
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use std::vec;
+
+    use crate::lex::{Lexer, Token};
+
+    #[test]
+    fn test_lex() {
+        let lex = Lexer::new("x = 1\ny = 1\nx = x + y\nresult = x + 1 * 2 - 3 / 4".to_string());
+
+        let intended = vec![
+            Token::Identifier("x".to_string()),
+            Token::Assign,
+            Token::Int(1),
+            Token::Identifier("y".to_string()),
+            Token::Assign,
+            Token::Int(1),
+            Token::Identifier("x".to_string()),
+            Token::Assign,
+            Token::Identifier("x".to_string()),
+            Token::Plus,
+            Token::Identifier("y".to_string()),
+            Token::Identifier("result".to_string()),
+            Token::Assign,
+            Token::Identifier("x".to_string()),
+            Token::Plus,
+            Token::Int(1),
+            Token::Mul,
+            Token::Int(2),
+            Token::Minus,
+            Token::Int(3),
+            Token::Div,
+            Token::Int(4),
+        ];
+
+        for (index, token) in lex.enumerate() {
+            let Some(wanted) = intended.get(index) else {
+                panic!("Expected end of token stream, got {token:?}")
+            };
+            assert_eq!(
+                token, *wanted,
+                "expected token {wanted:?}, found token {token:?}"
+            );
+        }
     }
 }
