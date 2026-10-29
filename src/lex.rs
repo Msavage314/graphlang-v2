@@ -1,6 +1,20 @@
 use core::iter::Peekable;
 use std::vec::IntoIter;
 
+#[derive(PartialEq)]
+pub enum TokenKind {
+    Int,
+    Identifier,
+
+    Assign,
+    Plus,
+    Minus,
+    Mul,
+    Div,
+
+    Eof,
+}
+
 #[derive(Debug, PartialEq, Eq)]
 pub enum Token {
     Int(isize),
@@ -14,6 +28,22 @@ pub enum Token {
     Div,
 
     Eof,
+}
+impl Token {
+    pub fn kind(&self) -> TokenKind {
+        match self {
+            Token::Int(_) => TokenKind::Int,
+            Token::Identifier(_) => TokenKind::Identifier,
+
+            Token::Assign => TokenKind::Assign,
+            Token::Plus => TokenKind::Plus,
+            Token::Minus => TokenKind::Minus,
+            Token::Mul => TokenKind::Mul,
+            Token::Div => TokenKind::Div,
+
+            Token::Eof => TokenKind::Eof,
+        }
+    }
 }
 
 /// Iterator over tokens in a given input file

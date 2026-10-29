@@ -20,8 +20,8 @@ fn main() -> Result<(), Error> {
             .get(1)
             .expect("Pass in a filename with `cargo run -- <filename>`"),
     )?;
-    let parse = Parser::from_string(contents);
-
-    println!("{honey_jar}");
+    let mut parse = Parser::from_string(contents);
+    let ast = parse.parse();
+    println!("{ast:?}");
     Ok(())
 }
