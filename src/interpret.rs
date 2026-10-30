@@ -1,6 +1,6 @@
 use crate::{
     errors::InterpretResult,
-    output::GraphOutput,
+    output::{GraphOutput, latex::ToLatex},
     parse::ast::{Expression, Program, Statement},
 };
 
@@ -34,16 +34,12 @@ impl Interpreter {
         return Ok(());
     }
     fn interpret_expression(output: &mut GraphOutput, expr: &Expression) -> InterpretResult {
-        match expr {
-            Expression::Int(i) => output.expressions.list.last_mut().unwrap().add_latex(i),
-            Expression::Identifier(i) => output.expressions.list.last_mut().unwrap().add_latex(i),
-
-            Expression::Binary { left, op, right } => {
-                Self::interpret_expression(output, left)?;
-                output.expressions.list.last_mut().unwrap().add_latex(op);
-                Self::interpret_expression(output, right)?;
-            }
-        }
+        output
+            .expressions
+            .list
+            .last_mut()
+            .unwrap()
+            .add_latex(expr.to_latex());
         return Ok(());
     }
 }

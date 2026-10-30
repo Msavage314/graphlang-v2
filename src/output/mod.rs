@@ -1,3 +1,5 @@
+pub mod latex;
+
 use core::default;
 use std::fmt::format;
 
