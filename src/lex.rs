@@ -113,6 +113,8 @@ impl Lexer {
                 '-' => Token::Minus,
                 '*' => Token::Mul,
                 '/' => Token::Div,
+                '(' => Token::LParen,
+                ')' => Token::RParen,
                 _ => panic!("Unknown char {c}"),
             };
             return Some(token);
