@@ -1,5 +1,7 @@
-mod lex;
-mod parse;
+pub mod interpret;
+pub mod lex;
+pub mod output;
+pub mod parse;
 use std::{env::args, fs, io::Error};
 
 use crate::{lex::Lexer, parse::Parser};

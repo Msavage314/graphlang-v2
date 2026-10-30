@@ -3,7 +3,7 @@ use core::{
     fmt::{self},
     iter::Peekable,
 };
-mod ast;
+pub mod ast;
 use crate::{
     lex::{Lexer, Token, TokenKind},
     parse::ast::{BinaryOp, Expr, Program, Statement},
