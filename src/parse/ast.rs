@@ -14,6 +14,7 @@ pub enum Statement {
 
 #[derive(Debug, Clone)]
 pub enum Expression {
+    Parentheses(Box<Expression>),
     Int(isize),
     Identifier(String),
     Binary {
@@ -25,6 +26,12 @@ pub enum Expression {
 impl ToLatex for Expression {
     fn to_latex(&self) -> String {
         match self {
+            Expression::Parentheses(i) => {
+                let left = "\\left(";
+                let right = "\\right)";
+
+                format!("{left} {} {right}", i.to_latex())
+            }
             Expression::Int(i) => i.to_string(),
             Expression::Identifier(name) => {
                 if name.len() == 1 {
