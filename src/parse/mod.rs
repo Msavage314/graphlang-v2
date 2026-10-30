@@ -105,6 +105,11 @@ impl Parser {
         match self.advance() {
             Token::Int(value) => Ok(Expression::Int(value)),
             Token::Identifier(ident) => Ok(Expression::Identifier(ident)),
+            Token::LParen => {
+                let expr = self.parse_expr_stmt()?;
+                self.expect(TokenKind::RParen)?;
+                Ok(Expression::Parentheses(Box::new(expr)))
+            }
             Token::Eof => Err(ParseError::UnexpectedEof),
             token => Err(ParseError::UnexpectedToken {
                 expected: TokenKind::Int,
