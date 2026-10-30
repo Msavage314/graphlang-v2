@@ -1,0 +1,55 @@
+{
+  "version": 11,
+  "randomSeed": "70c9df4ab4ea8c69e13a1890891a5eaf",
+  "graph": {
+    "viewport": {
+      "xmin": -10.0,
+      "ymin": -8.673254835996635,
+      "xmax": 10.0,
+      "ymax": 8.673254835996635
+    },
+    "__v12ViewportLatexStash": {
+      "xmin": "-10",
+      "ymin": "-8.673254835996635",
+      "xmax": "10",
+      "ymax": "8.673254835996635"
+    }
+  },
+  "expressions": {
+    "list": [
+      {
+        "type": "expression",
+        "id": "1",
+        "color": "#3b8b2e",
+        "latex": "x=1"
+      },
+      {
+        "type": "expression",
+        "id": "2",
+        "color": "#3b8b2e",
+        "latex": "y=1"
+      },
+      {
+        "type": "expression",
+        "id": "3",
+        "color": "#3b8b2e",
+        "latex": "a=2"
+      },
+      {
+        "type": "expression",
+        "id": "4",
+        "color": "#3b8b2e",
+        "latex": "b=3"
+      },
+      {
+        "type": "expression",
+        "id": "5",
+        "color": "#3b8b2e",
+        "latex": "y=b\\cdot x+a"
+      }
+    ]
+  },
+  "includeFunctionParametersInRandomSeed": true,
+  "doNotMigrateMovablePointStyle": true,
+  "backmigrated": 14
+}

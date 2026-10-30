@@ -1,3 +1,4 @@
+mod errors;
 pub mod interpret;
 pub mod lex;
 pub mod output;
@@ -24,6 +25,10 @@ fn main() -> Result<(), Error> {
     )?;
     let mut parse = Parser::from_string(contents);
     let ast = parse.parse();
-    println!("{ast:?}");
+    let mut interpreter = interpret::Interpreter::new(ast);
+    let output = interpreter.interpret();
+    let output = serde_json::to_string_pretty(&output).unwrap();
+    fs::write("./output.json", format!("{output}"))?;
+    println!("{output:?}");
     Ok(())
 }

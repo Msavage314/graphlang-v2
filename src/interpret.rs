@@ -1,15 +1,111 @@
-use crate::{output::GraphOutput, parse::ast::Program};
+use crate::{
+    errors::InterpretResult,
+    output::GraphOutput,
+    parse::ast::{Expression, Program, Statement},
+};
 
-struct Interpreter {
+pub struct Interpreter {
     ast: Program,
     output: GraphOutput,
 }
 impl Interpreter {
-    fn new(ast: Program) -> Self {
+    pub fn new(ast: Program) -> Self {
         return Self {
             ast,
             output: GraphOutput::default(),
         };
     }
-    fn interpret(&self) {}
+    pub fn interpret(&mut self) -> GraphOutput {
+        Self::interpret_program(&mut self.output, &self.ast).unwrap();
+        return self.output.clone();
+    }
+    fn interpret_program(output: &mut GraphOutput, program: &Program) -> InterpretResult {
+        for statement in &program.statements {
+            Self::interpret_statement(output, statement)?
+        }
+
+        return Ok(());
+    }
+    fn interpret_statement(output: &mut GraphOutput, stmt: &Statement) -> InterpretResult {
+        output.add_line();
+        match stmt {
+            Statement::Expr(expr) => Self::interpret_expression(output, expr)?,
+        }
+        return Ok(());
+    }
+    fn interpret_expression(output: &mut GraphOutput, expr: &Expression) -> InterpretResult {
+        match expr {
+            Expression::Int(i) => output.expressions.list.last_mut().unwrap().add_latex(i),
+            Expression::Identifier(i) => output.expressions.list.last_mut().unwrap().add_latex(i),
+
+            Expression::Binary { left, op, right } => {
+                Self::interpret_expression(output, left)?;
+                output.expressions.list.last_mut().unwrap().add_latex(op);
+                Self::interpret_expression(output, right)?;
+            }
+        }
+        return Ok(());
+    }
 }
+
+/*
+{
+  "version": 11,
+  "randomSeed": "6a5f8353f12a137473ad868c3a8973c0",
+  "graph": {
+    "viewport": {
+      "xmin": -10,
+      "ymin": -8.673254835996635,
+      "xmax": 10,
+      "ymax": 8.673254835996635
+    },
+    "__v12ViewportLatexStash": {
+      "xmin": "-10",
+      "xmax": "10",
+      "ymin": "-8.673254835996635",
+      "ymax": "8.673254835996635"
+    }
+  },
+  "expressions": {
+    "list": [
+      {
+        "type": "expression",
+        "id": "1",
+        "color": "#c74440",
+        "latex": "x\\ =\\ 1"
+      },
+      {
+        "type": "expression",
+        "id": "3",
+        "color": "#388c46",
+        "latex": "y\\ =\\ 1"
+      },
+      {
+        "type": "expression",
+        "id": "4",
+        "color": "#6042a6",
+        "latex": "a\\ =2"
+      },
+      {
+        "type": "expression",
+        "id": "5",
+        "color": "#000000",
+        "latex": "b\\ =\\ 3"
+      },
+      {
+        "type": "expression",
+        "id": "6",
+        "color": "#c74440",
+        "latex": "y\\ =\\ b\\cdot\\ x\\ +a"
+      },
+      {
+        "type": "expression",
+        "id": "2",
+        "color": "#2d70b3"
+      }
+    ]
+  },
+  "includeFunctionParametersInRandomSeed": true,
+  "doNotMigrateMovablePointStyle": true,
+  "backmigrated": 14
+} */

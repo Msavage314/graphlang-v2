@@ -5,34 +5,10 @@ use core::{
 };
 pub mod ast;
 use crate::{
+    errors::{ParseError, ParserResult},
     lex::{Lexer, Token, TokenKind},
-    parse::ast::{BinaryOp, Expr, Program, Statement},
+    parse::ast::{BinaryOp, Expression, Program, Statement},
 };
-
-#[derive(Debug)]
-pub enum ParseError {
-    UnexpectedToken {
-        expected: TokenKind,
-        found: TokenKind,
-    },
-    UnexpectedEof,
-}
-
-impl fmt::Display for ParseError {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        match self {
-            Self::UnexpectedEof => write!(f, "Parser error - Unexpected end of file",)?,
-            Self::UnexpectedToken { expected, found } => write!(
-                f,
-                "Parser error - Expected token {expected:?}, but found token {found:?}"
-            )?,
-        };
-        Ok(())
-    }
-}
-impl Error for ParseError {}
-
-pub type ParserResult<T> = Result<T, ParseError>;
 
 pub struct Parser {
     lex: Peekable<Lexer>,
@@ -102,7 +78,7 @@ impl Parser {
             _ => Ok(Statement::Expr(self.parse_expr_stmt()?)),
         }
     }
-    fn parse_expr_stmt(&mut self) -> ParserResult<Expr> {
+    fn parse_expr_stmt(&mut self) -> ParserResult<Expression> {
         let mut left = self.parse_primary()?;
         loop {
             let op = match self.peek() {
@@ -116,7 +92,7 @@ impl Parser {
             // Skip over the operator now we know there is one
             self.advance();
             let right = self.parse_primary()?;
-            left = Expr::Binary {
+            left = Expression::Binary {
                 left: Box::new(left),
                 op,
                 right: Box::new(right),
@@ -125,10 +101,10 @@ impl Parser {
         return Ok(left);
     }
 
-    fn parse_primary(&mut self) -> ParserResult<Expr> {
+    fn parse_primary(&mut self) -> ParserResult<Expression> {
         match self.advance() {
-            Token::Int(value) => Ok(Expr::Int(value)),
-            Token::Identifier(ident) => Ok(Expr::Identifier(ident)),
+            Token::Int(value) => Ok(Expression::Int(value)),
+            Token::Identifier(ident) => Ok(Expression::Identifier(ident)),
             Token::Eof => Err(ParseError::UnexpectedEof),
             token => Err(ParseError::UnexpectedToken {
                 expected: TokenKind::Int,
