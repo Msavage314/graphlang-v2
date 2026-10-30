@@ -110,6 +110,7 @@ impl Parser {
                 Token::Minus => BinaryOp::Subtract,
                 Token::Mul => BinaryOp::Multiply,
                 Token::Div => BinaryOp::Divide,
+                Token::Assign => BinaryOp::Assign,
                 _ => break,
             };
             // Skip over the operator now we know there is one

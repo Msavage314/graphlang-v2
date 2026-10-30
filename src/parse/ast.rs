@@ -25,4 +25,5 @@ pub enum BinaryOp {
     Subtract,
     Multiply,
     Divide,
+    Assign,
 }
