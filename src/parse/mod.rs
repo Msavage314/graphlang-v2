@@ -1,8 +1,4 @@
-use core::{
-    error::Error,
-    fmt::{self},
-    iter::Peekable,
-};
+use core::iter::Peekable;
 pub mod ast;
 use crate::{
     errors::{ParseError, ParserResult},
