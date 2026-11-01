@@ -80,7 +80,7 @@ impl Parser {
         self.expect(TokenKind::Fn)?;
         let name = self.expect_identifier()?;
 
-        self.expect(TokenKind::LParen);
+        self.expect(TokenKind::LParen)?;
         let mut params = Vec::new();
         if self.peek().kind() != TokenKind::RParen {
             loop {
@@ -114,6 +114,7 @@ impl Parser {
                 Token::Mul => BinaryOp::Multiply,
                 Token::Div => BinaryOp::Divide,
                 Token::Assign => BinaryOp::Assign,
+                Token::Pow => BinaryOp::Pow,
                 _ => break,
             };
             // Skip over the operator now we know there is one
@@ -153,6 +154,11 @@ impl Parser {
                 let expr = self.parse_expr_stmt()?;
                 self.expect(TokenKind::RParen)?;
                 Ok(Expression::Parentheses(Box::new(expr)))
+            }
+            Token::Bar => {
+                let expr = self.parse_expr_stmt()?;
+                self.expect(TokenKind::Bar)?;
+                Ok(Expression::Abs(Box::new(expr)))
             }
             Token::Eof => Err(ParseError::UnexpectedEof),
             token => Err(ParseError::UnexpectedToken {
