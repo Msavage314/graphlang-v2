@@ -92,7 +92,8 @@ impl ToLatex for Expression {
                 let args = args
                     .iter()
                     .map(|a| a.to_latex())
-                    .fold("".to_string(), |init, add| init + &ident_to_latex(&add));
+                    .collect::<Vec<_>>()
+                    .join(",");
 
                 format!("{name}\\left({args}\\right)")
             }
