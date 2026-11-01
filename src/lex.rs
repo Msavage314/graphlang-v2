@@ -1,72 +1,33 @@
 use core::iter::Peekable;
 use std::vec::IntoIter;
 
-#[derive(PartialEq, Debug)]
-pub enum TokenKind {
-    Int,
-    Identifier,
+use strum::EnumDiscriminants;
 
-    Assign,
-    Plus,
-    Minus,
-    Mul,
-    Div,
-    Pow,
-
-    LParen,
-    RParen,
-    Comma,
-    Bar,
-
-    Fn,
-
-    Eof,
-}
-
-#[derive(Debug, PartialEq, Eq)]
+/// List of possible tokens
+///
+/// Enum discriminants automatically generates tokenkind from this
+#[derive(Debug, Clone, PartialEq, Eq, EnumDiscriminants)]
+#[strum_discriminants(name(TokenKind))]
 pub enum Token {
     Int(isize),
     Identifier(String),
-
-    // Operators
     Assign,
     Plus,
     Minus,
     Mul,
     Div,
     Pow,
-
     LParen,
     RParen,
     Comma,
     Bar,
-
     Fn,
-
     Eof,
 }
+
 impl Token {
     pub fn kind(&self) -> TokenKind {
-        match self {
-            Token::Int(_) => TokenKind::Int,
-            Token::Identifier(_) => TokenKind::Identifier,
-
-            Token::Assign => TokenKind::Assign,
-            Token::Plus => TokenKind::Plus,
-            Token::Minus => TokenKind::Minus,
-            Token::Mul => TokenKind::Mul,
-            Token::Div => TokenKind::Div,
-            Token::Pow => TokenKind::Pow,
-
-            Token::LParen => TokenKind::LParen,
-            Token::RParen => TokenKind::RParen,
-            Token::Comma => TokenKind::Comma,
-            Token::Bar => TokenKind::Bar,
-
-            Token::Fn => TokenKind::Fn,
-
-            Token::Eof => TokenKind::Eof,
-        }
+        return TokenKind::from(self);
     }
 }
 
