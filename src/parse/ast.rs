@@ -1,6 +1,7 @@
 use core::fmt::Display;
+use std::fmt::format;
 
-use crate::output::latex::ToLatex;
+use crate::output::latex::{ToLatex, ident_to_latex};
 
 #[derive(Debug, Clone)]
 pub struct Program {
@@ -10,6 +11,30 @@ pub struct Program {
 #[derive(Debug, Clone)]
 pub enum Statement {
     Expr(Expression),
+    FunctionDef {
+        name: String,
+        params: Vec<String>,
+        body: Expression,
+    },
+}
+impl ToLatex for Statement {
+    fn to_latex(&self) -> String {
+        match self {
+            Statement::Expr(e) => e.to_latex(),
+            Statement::FunctionDef { name, params, body } => {
+                let params = params
+                    .iter()
+                    .map(|p| ident_to_latex(p))
+                    .collect::<Vec<_>>()
+                    .join(",");
+                format!(
+                    "{}\\left({params}\\right)={}",
+                    ident_to_latex(name),
+                    body.to_latex()
+                )
+            }
+        }
+    }
 }
 
 #[derive(Debug, Clone)]
@@ -22,7 +47,12 @@ pub enum Expression {
         op: BinaryOp,
         right: Box<Expression>,
     },
+    Call {
+        name: String,
+        args: Vec<Expression>,
+    },
 }
+
 impl ToLatex for Expression {
     fn to_latex(&self) -> String {
         match self {
@@ -33,21 +63,22 @@ impl ToLatex for Expression {
                 format!("{left} {} {right}", i.to_latex())
             }
             Expression::Int(i) => i.to_string(),
-            Expression::Identifier(name) => {
-                if name.len() == 1 {
-                    name.to_string()
-                } else {
-                    let new = name.split_at_checked(1).unwrap();
-                    let string = format!("{}_{{{}}}", new.0, new.1).to_string();
-                    string
-                }
-            }
+            Expression::Identifier(name) => ident_to_latex(name),
             Expression::Binary { left, op, right } => {
                 let left = left.to_latex();
                 let right = right.to_latex();
 
                 let op = op.to_latex();
                 format!("{left}{op}{right}")
+            }
+            Expression::Call { name, args } => {
+                let name = ident_to_latex(name);
+                let args = args
+                    .iter()
+                    .map(|a| a.to_latex())
+                    .fold("".to_string(), |init, add| init + &ident_to_latex(&add));
+
+                format!("{name}\\left({args}\\right)")
             }
         }
     }

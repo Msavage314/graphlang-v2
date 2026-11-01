@@ -1,8 +1,4 @@
-use core::{
-    error::Error,
-    fmt::{self},
-    iter::Peekable,
-};
+use core::iter::Peekable;
 pub mod ast;
 use crate::{
     errors::{ParseError, ParserResult},
@@ -74,8 +70,39 @@ impl Parser {
         Ok(Program { statements })
     }
     fn parse_stmt(&mut self) -> ParserResult<Statement> {
-        match self.peek() {
-            _ => Ok(Statement::Expr(self.parse_expr_stmt()?)),
+        if self.peek().kind() == TokenKind::Fn {
+            return self.parse_function();
+        } else {
+            return Ok(Statement::Expr(self.parse_expr_stmt()?));
+        }
+    }
+    fn parse_function(&mut self) -> ParserResult<Statement> {
+        self.expect(TokenKind::Fn)?;
+        let name = self.expect_identifier()?;
+
+        self.expect(TokenKind::LParen);
+        let mut params = Vec::new();
+        if self.peek().kind() != TokenKind::RParen {
+            loop {
+                params.push(self.expect_identifier()?);
+                if !self.eat(TokenKind::Comma) {
+                    break;
+                }
+            }
+        }
+        self.expect(TokenKind::RParen)?;
+        self.expect(TokenKind::Assign)?;
+        let body = self.parse_expr_stmt()?;
+        Ok(Statement::FunctionDef { name, params, body })
+    }
+    fn expect_identifier(&mut self) -> ParserResult<String> {
+        match self.advance() {
+            Token::Identifier(name) => Ok(name),
+            Token::Eof => Err(ParseError::UnexpectedEof),
+            token => Err(ParseError::UnexpectedToken {
+                expected: TokenKind::Identifier,
+                found: token.kind(),
+            }),
         }
     }
     fn parse_expr_stmt(&mut self) -> ParserResult<Expression> {
@@ -104,7 +131,24 @@ impl Parser {
     fn parse_primary(&mut self) -> ParserResult<Expression> {
         match self.advance() {
             Token::Int(value) => Ok(Expression::Int(value)),
-            Token::Identifier(ident) => Ok(Expression::Identifier(ident)),
+            Token::Identifier(ident) => {
+                if self.eat(TokenKind::LParen) {
+                    let mut args = Vec::new();
+                    if !self.eat(TokenKind::RParen) {
+                        loop {
+                            args.push(self.parse_primary()?);
+                            if self.eat(TokenKind::Comma) {
+                                continue;
+                            } // add a Comma token if you don't have one
+                            self.expect(TokenKind::RParen)?;
+                            break;
+                        }
+                    }
+                    Ok(Expression::Call { name: ident, args })
+                } else {
+                    Ok(Expression::Identifier(ident))
+                }
+            }
             Token::LParen => {
                 let expr = self.parse_expr_stmt()?;
                 self.expect(TokenKind::RParen)?;

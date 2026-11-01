@@ -1,7 +1,7 @@
 use crate::{
     errors::InterpretResult,
     output::{GraphOutput, latex::ToLatex},
-    parse::ast::{Expression, Program, Statement},
+    parse::ast::{Program, Statement},
 };
 
 pub struct Interpreter {
@@ -28,19 +28,13 @@ impl Interpreter {
     }
     fn interpret_statement(output: &mut GraphOutput, stmt: &Statement) -> InterpretResult {
         output.add_line();
-        match stmt {
-            Statement::Expr(expr) => Self::interpret_expression(output, expr)?,
-        }
-        return Ok(());
-    }
-    fn interpret_expression(output: &mut GraphOutput, expr: &Expression) -> InterpretResult {
         output
             .expressions
             .list
             .last_mut()
             .unwrap()
-            .add_latex(expr.to_latex());
-        return Ok(());
+            .add_latex(stmt.to_latex());
+        Ok(())
     }
 }
 
