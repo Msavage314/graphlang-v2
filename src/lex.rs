@@ -73,7 +73,7 @@ impl Lexer {
         let mut s = String::new();
         s.push(c);
 
-        while let Some('a'..'z') = self.peek_char() {
+        while let Some('a'..='z') = self.peek_char() {
             s.push(self.read_char().unwrap());
         }
         return match s.as_str() {
