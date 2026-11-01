@@ -12,29 +12,29 @@ pub struct Parser {
 
 impl Parser {
     pub fn from_lex(lex: Lexer) -> Self {
-        return Self {
+        Self {
             lex: lex.peekable(),
-        };
+        }
     }
     pub fn from_string<T>(text: T) -> Self
     where
         T: ToString,
     {
         let lex = Lexer::new(text);
-        return Self {
+        Self {
             lex: lex.peekable(),
-        };
+        }
     }
 
     fn peek(&mut self) -> &Token {
-        return self.lex.peek().unwrap_or(&Token::Eof);
+        self.lex.peek().unwrap_or(&Token::Eof)
     }
     fn expect(&mut self, expected: TokenKind) -> Result<Token, ParseError> {
         match self.peek() {
             token if token.kind() == expected => Ok(self.advance()),
             token if token.kind() == TokenKind::Eof => Err(ParseError::UnexpectedEof),
             token => Err(ParseError::UnexpectedToken {
-                expected: expected,
+                expected,
                 found: token.kind(),
             }),
         }
@@ -45,16 +45,14 @@ impl Parser {
             self.advance();
             return true;
         }
-        return false;
+        false
     }
     fn advance(&mut self) -> Token {
         self.lex.next().unwrap_or(Token::Eof)
     }
     pub fn parse(&mut self) -> Program {
         match self.parse_program() {
-            Ok(p) => {
-                return p;
-            }
+            Ok(p) => p,
             Err(e) => {
                 panic!("{}", e);
             }
@@ -71,9 +69,9 @@ impl Parser {
     }
     fn parse_stmt(&mut self) -> ParserResult<Statement> {
         if self.peek().kind() == TokenKind::Fn {
-            return self.parse_function();
+            self.parse_function()
         } else {
-            return Ok(Statement::Expr(self.parse_expr_stmt()?));
+            Ok(Statement::Expr(self.parse_expr_stmt()?))
         }
     }
     fn parse_function(&mut self) -> ParserResult<Statement> {
@@ -126,7 +124,7 @@ impl Parser {
                 right: Box::new(right),
             }
         }
-        return Ok(left);
+        Ok(left)
     }
 
     fn parse_primary(&mut self) -> ParserResult<Expression> {
@@ -137,7 +135,7 @@ impl Parser {
                     let mut args = Vec::new();
                     if !self.eat(TokenKind::RParen) {
                         loop {
-                            args.push(self.parse_primary()?);
+                            args.push(self.parse_expr_stmt()?);
                             if self.eat(TokenKind::Comma) {
                                 continue;
                             } // add a Comma token if you don't have one

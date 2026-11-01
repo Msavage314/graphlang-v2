@@ -27,7 +27,7 @@ pub enum Token {
 
 impl Token {
     pub fn kind(&self) -> TokenKind {
-        return TokenKind::from(self);
+        TokenKind::from(self)
     }
 }
 
@@ -42,7 +42,7 @@ impl Lexer {
     where
         T: ToString,
     {
-        return Self {
+        Self {
             text: text
                 .to_string()
                 .chars()
@@ -50,14 +50,14 @@ impl Lexer {
                 .into_iter()
                 .peekable(),
             position: 0,
-        };
+        }
     }
     fn read_char(&mut self) -> Option<char> {
         self.position += 1;
-        return self.text.next();
+        self.text.next()
     }
     fn peek_char(&mut self) -> Option<&char> {
-        return self.text.peek();
+        self.text.peek()
     }
     fn parse_int(&mut self, c: char) -> Token {
         let mut s = String::new();
@@ -67,7 +67,7 @@ impl Lexer {
             s.push(self.read_char().unwrap());
         }
 
-        return Token::Int(s.parse::<isize>().expect("Failed to parse integer"));
+        Token::Int(s.parse::<isize>().expect("Failed to parse integer"))
     }
     fn parse_identifier(&mut self, c: char) -> Token {
         let mut s = String::new();
@@ -76,10 +76,10 @@ impl Lexer {
         while let Some('a'..='z') = self.peek_char() {
             s.push(self.read_char().unwrap());
         }
-        return match s.as_str() {
+        match s.as_str() {
             "fn" => Token::Fn,
             _ => Token::Identifier(s),
-        };
+        }
     }
     fn next_token(&mut self) -> Option<Token> {
         self.skip_whitespace();
@@ -104,7 +104,7 @@ impl Lexer {
             return Some(token);
         }
 
-        return None;
+        None
     }
     fn skip_whitespace(&mut self) {
         while let Some(c) = self.peek_char() {
@@ -119,7 +119,7 @@ impl Lexer {
 impl Iterator for Lexer {
     type Item = Token;
     fn next(&mut self) -> Option<Self::Item> {
-        return self.next_token();
+        self.next_token()
     }
 }
 

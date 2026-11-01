@@ -1,5 +1,3 @@
-use core::fmt::write;
-
 use crate::lex::TokenKind;
 
 #[derive(Debug)]

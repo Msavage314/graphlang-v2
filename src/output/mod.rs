@@ -1,7 +1,6 @@
 pub mod latex;
 
 use core::default;
-use std::fmt::format;
 
 use serde::Serialize;
 
@@ -42,7 +41,7 @@ impl default::Default for GraphOutput {
             xmax: 10.0,
             ymax: 8.673254835996635,
         };
-        return GraphOutput {
+        GraphOutput {
             version: 11,
             seed: "70c9df4ab4ea8c69e13a1890891a5eaf".into(),
             graph: Graph {
@@ -54,7 +53,7 @@ impl default::Default for GraphOutput {
             include_function_parameters_in_random_seed: true,
             do_not_migrate_movable_point_style: true,
             backmigrated: 14,
-        };
+        }
     }
 }
 
@@ -82,12 +81,12 @@ struct Viewport {
 
 impl core::default::Default for Viewport {
     fn default() -> Self {
-        return Viewport {
+        Viewport {
             xmin: -10.0,
             ymin: -8.673254835996635,
             xmax: 10.0,
             ymax: 8.673254835996635,
-        };
+        }
     }
 }
 
@@ -100,12 +99,12 @@ struct ViewportLatexStash {
 }
 impl From<Viewport> for ViewportLatexStash {
     fn from(value: Viewport) -> Self {
-        return Self {
+        Self {
             xmin: value.xmin.to_string(),
             ymin: value.ymin.to_string(),
             xmax: value.xmax.to_string(),
             ymax: value.ymax.to_string(),
-        };
+        }
     }
 }
 

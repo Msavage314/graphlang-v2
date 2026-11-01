@@ -10,21 +10,21 @@ pub struct Interpreter {
 }
 impl Interpreter {
     pub fn new(ast: Program) -> Self {
-        return Self {
+        Self {
             ast,
             output: GraphOutput::default(),
-        };
+        }
     }
     pub fn interpret(&mut self) -> GraphOutput {
         Self::interpret_program(&mut self.output, &self.ast).unwrap();
-        return self.output.clone();
+        self.output.clone()
     }
     fn interpret_program(output: &mut GraphOutput, program: &Program) -> InterpretResult {
         for statement in &program.statements {
             Self::interpret_statement(output, statement)?
         }
 
-        return Ok(());
+        Ok(())
     }
     fn interpret_statement(output: &mut GraphOutput, stmt: &Statement) -> InterpretResult {
         output.add_line();

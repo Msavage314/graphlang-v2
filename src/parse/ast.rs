@@ -1,6 +1,3 @@
-use core::fmt::Display;
-use std::fmt::format;
-
 use crate::output::latex::{ToLatex, ident_to_latex};
 
 #[derive(Debug, Clone)]
