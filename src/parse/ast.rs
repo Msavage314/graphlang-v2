@@ -40,6 +40,7 @@ impl ToLatex for Statement {
 #[derive(Debug, Clone)]
 pub enum Expression {
     Parentheses(Box<Expression>),
+    Abs(Box<Expression>),
     Int(isize),
     Identifier(String),
     Binary {
@@ -59,6 +60,12 @@ impl ToLatex for Expression {
             Expression::Parentheses(i) => {
                 let left = "\\left(";
                 let right = "\\right)";
+
+                format!("{left} {} {right}", i.to_latex())
+            }
+            Expression::Abs(i) => {
+                let left = "\\left|";
+                let right = "\\right|";
 
                 format!("{left} {} {right}", i.to_latex())
             }
