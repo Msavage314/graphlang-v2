@@ -13,6 +13,9 @@ pub enum TokenKind {
     Div,
     LParen,
     RParen,
+    Comma,
+
+    Fn,
 
     Eof,
 }
@@ -30,6 +33,9 @@ pub enum Token {
     Div,
     LParen,
     RParen,
+    Comma,
+
+    Fn,
 
     Eof,
 }
@@ -47,6 +53,9 @@ impl Token {
 
             Token::LParen => TokenKind::LParen,
             Token::RParen => TokenKind::RParen,
+            Token::Comma => TokenKind::Comma,
+
+            Token::Fn => TokenKind::Fn,
 
             Token::Eof => TokenKind::Eof,
         }
@@ -89,7 +98,7 @@ impl Lexer {
             s.push(self.read_char().unwrap());
         }
 
-        Token::Int(s.parse::<isize>().expect("Failed to parse integer"))
+        return Token::Int(s.parse::<isize>().expect("Failed to parse integer"));
     }
     fn parse_identifier(&mut self, c: char) -> Token {
         let mut s = String::new();
@@ -98,15 +107,17 @@ impl Lexer {
         while let Some('a'..'z') = self.peek_char() {
             s.push(self.read_char().unwrap());
         }
-
-        Token::Identifier(s)
+        return match s.as_str() {
+            "fn" => Token::Fn,
+            _ => Token::Identifier(s),
+        };
     }
     fn next_token(&mut self) -> Option<Token> {
         self.skip_whitespace();
         if let Some(c) = self.read_char() {
             let token = match c {
                 '0'..='9' => self.parse_int(c),
-                'a'..'z' => self.parse_identifier(c),
+                'a'..='z' => self.parse_identifier(c),
 
                 '=' => Token::Assign,
                 '+' => Token::Plus,
@@ -115,6 +126,8 @@ impl Lexer {
                 '/' => Token::Div,
                 '(' => Token::LParen,
                 ')' => Token::RParen,
+                ',' => Token::Comma,
+
                 _ => panic!("Unknown char {c}"),
             };
             return Some(token);
