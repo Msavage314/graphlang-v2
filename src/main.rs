@@ -20,5 +20,6 @@ fn main() -> Result<(), Error> {
     let output = serde_json::to_string_pretty(&output).unwrap();
     fs::write("./output.json", &output)?;
     println!("{output}");
+    clipboard_anywhere::set_clipboard(&output).expect("Failed to copy to clipboard");
     Ok(())
 }
