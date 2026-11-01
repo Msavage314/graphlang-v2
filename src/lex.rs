@@ -11,6 +11,8 @@ pub enum TokenKind {
     Minus,
     Mul,
     Div,
+    Pow,
+
     LParen,
     RParen,
     Comma,
@@ -31,6 +33,8 @@ pub enum Token {
     Minus,
     Mul,
     Div,
+    Pow,
+
     LParen,
     RParen,
     Comma,
@@ -50,6 +54,7 @@ impl Token {
             Token::Minus => TokenKind::Minus,
             Token::Mul => TokenKind::Mul,
             Token::Div => TokenKind::Div,
+            Token::Pow => TokenKind::Pow,
 
             Token::LParen => TokenKind::LParen,
             Token::RParen => TokenKind::RParen,
@@ -124,6 +129,7 @@ impl Lexer {
                 '-' => Token::Minus,
                 '*' => Token::Mul,
                 '/' => Token::Div,
+                '^' => Token::Pow,
                 '(' => Token::LParen,
                 ')' => Token::RParen,
                 ',' => Token::Comma,

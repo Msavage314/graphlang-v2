@@ -80,7 +80,7 @@ impl Parser {
         self.expect(TokenKind::Fn)?;
         let name = self.expect_identifier()?;
 
-        self.expect(TokenKind::LParen);
+        self.expect(TokenKind::LParen)?;
         let mut params = Vec::new();
         if self.peek().kind() != TokenKind::RParen {
             loop {
@@ -114,6 +114,7 @@ impl Parser {
                 Token::Mul => BinaryOp::Multiply,
                 Token::Div => BinaryOp::Divide,
                 Token::Assign => BinaryOp::Assign,
+                Token::Pow => BinaryOp::Pow,
                 _ => break,
             };
             // Skip over the operator now we know there is one

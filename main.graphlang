@@ -1,6 +1,9 @@
-x = (1 + 2)
-a = 2
-b = 3
-ab = 44
-fn manhattan(ax,ay,bx,by) = (ax - bx) + (ay - by)
+first = 1
+second = 2
+
+fn firstdd(first,second) = first + second
+fn sub(first,second) = first - second
+fn mul(first,second) = first * second
+fn div(first,second) = first / second
+fn pow(first,second) = first ^ second
 

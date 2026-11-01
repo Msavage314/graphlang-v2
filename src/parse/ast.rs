@@ -67,9 +67,18 @@ impl ToLatex for Expression {
             Expression::Binary { left, op, right } => {
                 let left = left.to_latex();
                 let right = right.to_latex();
-
-                let op = op.to_latex();
-                format!("{left}{op}{right}")
+                let op_latex = op.to_latex();
+                match op {
+                    BinaryOp::Divide => {
+                        format!("\\frac{{{left}}}{{{right}}}")
+                    }
+                    BinaryOp::Pow => {
+                        format!("{{{left}}}^{{{right}}}")
+                    }
+                    _ => {
+                        format!("{left}{op_latex}{right}")
+                    }
+                }
             }
             Expression::Call { name, args } => {
                 let name = ident_to_latex(name);
@@ -90,23 +99,10 @@ pub enum BinaryOp {
     Subtract,
     Multiply,
     Divide,
+    Pow,
     Assign,
 }
-impl Display for BinaryOp {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(
-            f,
-            "{}",
-            match self {
-                BinaryOp::Add => "+".to_string(),
-                BinaryOp::Subtract => "-".to_string(),
-                BinaryOp::Multiply => "\\cdot ".to_string(),
-                BinaryOp::Divide => "/".to_string(),
-                BinaryOp::Assign => "=".to_string(),
-            }
-        )
-    }
-}
+
 impl ToLatex for BinaryOp {
     fn to_latex(&self) -> String {
         match self {
@@ -114,6 +110,7 @@ impl ToLatex for BinaryOp {
             BinaryOp::Subtract => "-".to_string(),
             BinaryOp::Multiply => "\\cdot ".to_string(),
             BinaryOp::Divide => "/".to_string(),
+            BinaryOp::Pow => "^".to_string(),
             BinaryOp::Assign => "=".to_string(),
         }
     }
