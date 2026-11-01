@@ -159,8 +159,7 @@ impl Parser {
                 Ok(Expression::Abs(Box::new(expr)))
             }
             Token::Eof => Err(ParseError::UnexpectedEof),
-            token => Err(ParseError::UnexpectedToken {
-                expected: TokenKind::Int,
+            token => Err(ParseError::ExpectedExpression {
                 found: token.kind(),
             }),
         }

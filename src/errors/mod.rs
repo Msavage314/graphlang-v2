@@ -7,6 +7,9 @@ pub enum ParseError {
         found: TokenKind,
     },
     UnexpectedEof,
+    ExpectedExpression {
+        found: TokenKind,
+    },
 }
 
 impl core::fmt::Display for ParseError {
@@ -17,6 +20,9 @@ impl core::fmt::Display for ParseError {
                 f,
                 "Parser error - Expected token {expected:?}, but found token {found:?}"
             )?,
+            Self::ExpectedExpression { found } => {
+                write!(f, "Parser error - Expected expression but found {found:?}")?
+            }
         };
         Ok(())
     }

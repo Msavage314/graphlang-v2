@@ -19,6 +19,6 @@ fn main() -> Result<(), Error> {
     let output = interpreter.interpret();
     let output = serde_json::to_string_pretty(&output).unwrap();
     fs::write("./output.json", &output)?;
-    println!("{output:?}");
+    println!("{output}");
     Ok(())
 }
