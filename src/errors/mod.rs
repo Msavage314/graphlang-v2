@@ -10,18 +10,22 @@ pub enum ParseError {
     ExpectedExpression {
         found: TokenKind,
     },
+    InvalidAssignmentTarget,
 }
 
 impl core::fmt::Display for ParseError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            Self::UnexpectedEof => write!(f, "Parser error - Unexpected end of file",)?,
-            Self::UnexpectedToken { expected, found } => write!(
+            ParseError::UnexpectedEof => write!(f, "Parser error - Unexpected end of file",)?,
+            ParseError::UnexpectedToken { expected, found } => write!(
                 f,
                 "Parser error - Expected token {expected:?}, but found token {found:?}"
             )?,
-            Self::ExpectedExpression { found } => {
+            ParseError::ExpectedExpression { found } => {
                 write!(f, "Parser error - Expected expression but found {found:?}")?
+            }
+            ParseError::InvalidAssignmentTarget => {
+                write!(f, "Parser error - InvalidAssignmentTarget")?
             }
         };
         Ok(())

@@ -13,6 +13,10 @@ pub enum Statement {
         params: Vec<String>,
         body: Expression,
     },
+    Assignment {
+        name: String,
+        value: Expression,
+    },
 }
 impl ToLatex for Statement {
     fn to_latex(&self) -> String {
@@ -29,6 +33,9 @@ impl ToLatex for Statement {
                     ident_to_latex(name),
                     body.to_latex()
                 )
+            }
+            Statement::Assignment { name, value: body } => {
+                format!("{} = {}", ident_to_latex(name), body.to_latex())
             }
         }
     }
@@ -105,7 +112,6 @@ pub enum BinaryOp {
     Multiply,
     Divide,
     Pow,
-    Assign,
 }
 
 impl ToLatex for BinaryOp {
@@ -116,7 +122,6 @@ impl ToLatex for BinaryOp {
             BinaryOp::Multiply => "\\cdot ".to_string(),
             BinaryOp::Divide => "/".to_string(),
             BinaryOp::Pow => "^".to_string(),
-            BinaryOp::Assign => "=".to_string(),
         }
     }
 }

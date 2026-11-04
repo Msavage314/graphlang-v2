@@ -21,13 +21,13 @@
         "type": "expression",
         "id": "1",
         "color": "#3b8b2e",
-        "latex": "f_{irst}=1"
+        "latex": "f_{irst} = 1"
       },
       {
         "type": "expression",
         "id": "2",
         "color": "#3b8b2e",
-        "latex": "s_{econd}=2"
+        "latex": "s_{econd} = 2"
       },
       {
         "type": "expression",
@@ -70,6 +70,12 @@
         "id": "9",
         "color": "#3b8b2e",
         "latex": "s_{qrt}\\left(f_{irst}\\right)={f_{irst}}^{\\left( \\frac{1}{2} \\right)}"
+      },
+      {
+        "type": "expression",
+        "id": "10",
+        "color": "#3b8b2e",
+        "latex": "x = 1"
       }
     ]
   },

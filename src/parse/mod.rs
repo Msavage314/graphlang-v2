@@ -69,10 +69,20 @@ impl Parser {
     }
     fn parse_stmt(&mut self) -> ParserResult<Statement> {
         if self.peek().kind() == TokenKind::Fn {
-            self.parse_function()
-        } else {
-            Ok(Statement::Expr(self.parse_expr_stmt()?))
+            return self.parse_function();
         }
+
+        let expr = self.parse_expr_stmt()?;
+
+        if self.eat(TokenKind::Assign) {
+            let Expression::Identifier(name) = expr else {
+                return Err(ParseError::InvalidAssignmentTarget);
+            };
+            let value = self.parse_expr_stmt()?;
+            return Ok(Statement::Assignment { name, value });
+        }
+
+        Ok(Statement::Expr(expr))
     }
     fn parse_function(&mut self) -> ParserResult<Statement> {
         self.expect(TokenKind::Fn)?;
@@ -111,7 +121,6 @@ impl Parser {
                 Token::Minus => BinaryOp::Subtract,
                 Token::Mul => BinaryOp::Multiply,
                 Token::Div => BinaryOp::Divide,
-                Token::Assign => BinaryOp::Assign,
                 Token::Pow => BinaryOp::Pow,
                 _ => break,
             };
