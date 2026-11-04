@@ -17,6 +17,7 @@ pub enum Statement {
         name: String,
         value: Expression,
     },
+    Comment(String),
 }
 impl ToLatex for Statement {
     fn to_latex(&self) -> String {
@@ -37,6 +38,8 @@ impl ToLatex for Statement {
             Statement::Assignment { name, value: body } => {
                 format!("{} = {}", ident_to_latex(name), body.to_latex())
             }
+            // TODO Potentially change this section somehow?
+            Statement::Comment(_) => panic!("Comment doesn't support latex"),
         }
     }
 }

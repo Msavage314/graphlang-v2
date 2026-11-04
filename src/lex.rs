@@ -23,6 +23,8 @@ pub enum Token {
     Bar,
     Fn,
     Eof,
+    Hash,
+    Comment(String),
 }
 
 impl Token {
@@ -87,7 +89,17 @@ impl Lexer {
             let token = match c {
                 '0'..='9' => self.parse_int(c),
                 'a'..='z' => self.parse_identifier(c),
-
+                '#' => {
+                    let mut string = String::new();
+                    while let Some(c) = self.peek_char() {
+                        if *c == '\n' {
+                            break;
+                        }
+                        string.push(self.read_char().unwrap());
+                    }
+                    println!("Comment here!");
+                    Token::Comment(string)
+                }
                 '=' => Token::Assign,
                 '+' => Token::Plus,
                 '-' => Token::Minus,
@@ -98,7 +110,6 @@ impl Lexer {
                 ')' => Token::RParen,
                 ',' => Token::Comma,
                 '|' => Token::Bar,
-
                 _ => panic!("Unknown char {c}"),
             };
             return Some(token);
