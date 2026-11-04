@@ -28,8 +28,19 @@ impl GraphOutput {
         self.expressions.list.push(Expression {
             expr_type: "expression".into(),
             id,
-            color: "#3b8b2e".into(),
+            color: Some("#3b8b2e".into()),
             latex: String::new(),
+            text: None,
+        });
+    }
+    pub fn add_note(&mut self) {
+        let id = (self.expressions.list.len() + 1).to_string();
+        self.expressions.list.push(Expression {
+            expr_type: "note".into(),
+            id,
+            color: None,
+            latex: "".into(),
+            text: Some("".into()),
         });
     }
 }
@@ -114,15 +125,26 @@ pub struct Expression {
     expr_type: String,
 
     id: String,
-    color: String,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    color: Option<String>,
 
     #[serde(skip_serializing_if = "String::is_empty")]
     latex: String,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    text: Option<String>,
 }
 
 impl Expression {
     pub fn add_latex(&mut self, latex: impl ToString) {
         self.latex.push_str(&latex.to_string());
+    }
+    pub fn add_text(&mut self, text: impl ToString) {
+        let Some(t) = self.text.as_mut() else {
+            return;
+        };
+        t.push_str(&text.to_string());
     }
 }
 

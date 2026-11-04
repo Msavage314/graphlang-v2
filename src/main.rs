@@ -21,7 +21,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     let output = interpreter.interpret()?;
     let output = serde_json::to_string_pretty(&output).expect("Failed to parse to JSON");
     fs::write("./output.json", &output).expect("Failed to write to file");
-    println!("{output}");
+    //println!("{output}");
     clipboard_anywhere::set_clipboard(&output).expect("Failed to copy to clipboard");
     Ok(())
 }

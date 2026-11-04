@@ -18,56 +18,61 @@
   "expressions": {
     "list": [
       {
-        "type": "expression",
+        "type": "note",
         "id": "1",
-        "color": "#3b8b2e",
-        "latex": "f_{irst} = 1"
+        "text": " comments are translated into desmos notes"
       },
       {
         "type": "expression",
         "id": "2",
         "color": "#3b8b2e",
-        "latex": "s_{econd} = 2"
+        "latex": "f_{irst} = 1"
       },
       {
         "type": "expression",
         "id": "3",
         "color": "#3b8b2e",
-        "latex": "f_{irstdd}\\left(f_{irst},s_{econd}\\right)=f_{irst}+s_{econd}"
+        "latex": "s_{econd} = 2"
       },
       {
         "type": "expression",
         "id": "4",
         "color": "#3b8b2e",
-        "latex": "s_{ub}\\left(f_{irst},s_{econd}\\right)=f_{irst}-s_{econd}"
+        "latex": "f_{irstdd}\\left(f_{irst},s_{econd}\\right)=f_{irst}+s_{econd}"
       },
       {
         "type": "expression",
         "id": "5",
         "color": "#3b8b2e",
-        "latex": "m_{ul}\\left(f_{irst},s_{econd}\\right)=f_{irst}\\cdot s_{econd}"
+        "latex": "s_{ub}\\left(f_{irst},s_{econd}\\right)=f_{irst}-s_{econd}"
       },
       {
         "type": "expression",
         "id": "6",
         "color": "#3b8b2e",
-        "latex": "d_{iv}\\left(f_{irst},s_{econd}\\right)=\\frac{f_{irst}}{s_{econd}}"
+        "latex": "m_{ul}\\left(f_{irst},s_{econd}\\right)=f_{irst}\\cdot s_{econd}"
       },
       {
         "type": "expression",
         "id": "7",
         "color": "#3b8b2e",
-        "latex": "p_{ow}\\left(f_{irst},s_{econd}\\right)={f_{irst}}^{s_{econd}}"
+        "latex": "d_{iv}\\left(f_{irst},s_{econd}\\right)=\\frac{f_{irst}}{s_{econd}}"
       },
       {
         "type": "expression",
         "id": "8",
         "color": "#3b8b2e",
-        "latex": "a_{bs}\\left(f_{irst}\\right)=\\left| f_{irst} \\right|"
+        "latex": "p_{ow}\\left(f_{irst},s_{econd}\\right)={f_{irst}}^{s_{econd}}"
       },
       {
         "type": "expression",
         "id": "9",
+        "color": "#3b8b2e",
+        "latex": "a_{bs}\\left(f_{irst}\\right)=\\left| f_{irst} \\right|"
+      },
+      {
+        "type": "expression",
+        "id": "10",
         "color": "#3b8b2e",
         "latex": "x = 2"
       }

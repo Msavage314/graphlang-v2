@@ -97,6 +97,7 @@ impl Lexer {
                         }
                         string.push(self.read_char().unwrap());
                     }
+                    println!("Comment here!");
                     Token::Comment(string)
                 }
                 '=' => Token::Assign,
@@ -117,21 +118,11 @@ impl Lexer {
         None
     }
     fn skip_whitespace(&mut self) {
-        loop {
-            match self.peek_char() {
-                Some(c) if c.is_whitespace() => {
-                    self.read_char();
-                }
-                Some('#') => {
-                    // Consume until end of line (leave the '\n' for the whitespace branch)
-                    while let Some(c) = self.peek_char() {
-                        if *c == '\n' {
-                            break;
-                        }
-                        self.read_char();
-                    }
-                }
-                _ => return,
+        while let Some(c) = self.peek_char() {
+            if c.is_whitespace() {
+                self.read_char();
+            } else {
+                return;
             }
         }
     }

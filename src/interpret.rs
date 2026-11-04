@@ -27,14 +27,23 @@ impl Interpreter {
         Ok(())
     }
     fn interpret_statement(output: &mut GraphOutput, stmt: &Statement) -> InterpretResult {
-        output.add_line();
-        output
-            .expressions
-            .list
-            .last_mut()
-            .unwrap()
-            .add_latex(stmt.to_latex());
-        Ok(())
+        match stmt {
+            Statement::Comment(c) => {
+                output.add_note();
+                output.expressions.list.last_mut().unwrap().add_text(c);
+                Ok(())
+            }
+            _ => {
+                output.add_line();
+                output
+                    .expressions
+                    .list
+                    .last_mut()
+                    .unwrap()
+                    .add_latex(stmt.to_latex());
+                Ok(())
+            }
+        }
     }
 }
 
