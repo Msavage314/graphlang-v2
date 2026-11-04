@@ -9,6 +9,4 @@ fn pow(first,second) = first ^ second
 
 fn abs(first) = | first |
 
-fn sqrt(first) = first ^ (1 / 2)
-
-x = 1
+x = 2

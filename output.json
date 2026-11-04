@@ -69,13 +69,7 @@
         "type": "expression",
         "id": "9",
         "color": "#3b8b2e",
-        "latex": "s_{qrt}\\left(f_{irst}\\right)={f_{irst}}^{\\left( \\frac{1}{2} \\right)}"
-      },
-      {
-        "type": "expression",
-        "id": "10",
-        "color": "#3b8b2e",
-        "latex": "x = 1"
+        "latex": "x = 2"
       }
     ]
   },

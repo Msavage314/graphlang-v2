@@ -50,13 +50,8 @@ impl Parser {
     fn advance(&mut self) -> Token {
         self.lex.next().unwrap_or(Token::Eof)
     }
-    pub fn parse(&mut self) -> Program {
-        match self.parse_program() {
-            Ok(p) => p,
-            Err(e) => {
-                panic!("{}", e);
-            }
-        }
+    pub fn parse(&mut self) -> ParserResult<Program> {
+        self.parse_program()
     }
     fn parse_program(&mut self) -> ParserResult<Program> {
         let mut statements = Vec::new();
