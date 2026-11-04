@@ -36,7 +36,7 @@ impl GraphOutput {
     pub fn add_note(&mut self) {
         let id = (self.expressions.list.len() + 1).to_string();
         self.expressions.list.push(Expression {
-            expr_type: "note".into(),
+            expr_type: "text".into(),
             id,
             color: None,
             latex: "".into(),
