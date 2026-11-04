@@ -66,6 +66,12 @@ impl Parser {
         if self.peek().kind() == TokenKind::Fn {
             return self.parse_function();
         }
+        if self.peek().kind() == TokenKind::Comment {
+            let Token::Comment(text) = self.advance() else {
+                unreachable!()
+            };
+            return Ok(Statement::Comment(text));
+        }
 
         let expr = self.parse_expr_stmt()?;
 
