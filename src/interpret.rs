@@ -1,5 +1,5 @@
 use crate::{
-    errors::InterpretResult,
+    errors::{InterpretError, InterpretResult},
     output::{GraphOutput, latex::ToLatex},
     parse::ast::{Program, Statement},
 };
@@ -10,21 +10,21 @@ pub struct Interpreter {
 }
 impl Interpreter {
     pub fn new(ast: Program) -> Self {
-        return Self {
+        Self {
             ast,
             output: GraphOutput::default(),
-        };
+        }
     }
-    pub fn interpret(&mut self) -> GraphOutput {
-        Self::interpret_program(&mut self.output, &self.ast).unwrap();
-        return self.output.clone();
+    pub fn interpret(&mut self) -> Result<GraphOutput, InterpretError> {
+        Self::interpret_program(&mut self.output, &self.ast)?;
+        Ok(self.output.clone())
     }
     fn interpret_program(output: &mut GraphOutput, program: &Program) -> InterpretResult {
         for statement in &program.statements {
             Self::interpret_statement(output, statement)?
         }
 
-        return Ok(());
+        Ok(())
     }
     fn interpret_statement(output: &mut GraphOutput, stmt: &Statement) -> InterpretResult {
         output.add_line();

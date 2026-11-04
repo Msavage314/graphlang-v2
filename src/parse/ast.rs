@@ -1,6 +1,3 @@
-use core::fmt::Display;
-use std::fmt::format;
-
 use crate::output::latex::{ToLatex, ident_to_latex};
 
 #[derive(Debug, Clone)]
@@ -15,6 +12,10 @@ pub enum Statement {
         name: String,
         params: Vec<String>,
         body: Expression,
+    },
+    Assignment {
+        name: String,
+        value: Expression,
     },
 }
 impl ToLatex for Statement {
@@ -32,6 +33,9 @@ impl ToLatex for Statement {
                     ident_to_latex(name),
                     body.to_latex()
                 )
+            }
+            Statement::Assignment { name, value: body } => {
+                format!("{} = {}", ident_to_latex(name), body.to_latex())
             }
         }
     }
@@ -92,7 +96,8 @@ impl ToLatex for Expression {
                 let args = args
                     .iter()
                     .map(|a| a.to_latex())
-                    .fold("".to_string(), |init, add| init + &ident_to_latex(&add));
+                    .collect::<Vec<_>>()
+                    .join(",");
 
                 format!("{name}\\left({args}\\right)")
             }
@@ -107,7 +112,6 @@ pub enum BinaryOp {
     Multiply,
     Divide,
     Pow,
-    Assign,
 }
 
 impl ToLatex for BinaryOp {
@@ -118,7 +122,6 @@ impl ToLatex for BinaryOp {
             BinaryOp::Multiply => "\\cdot ".to_string(),
             BinaryOp::Divide => "/".to_string(),
             BinaryOp::Pow => "^".to_string(),
-            BinaryOp::Assign => "=".to_string(),
         }
     }
 }

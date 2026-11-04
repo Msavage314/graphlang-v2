@@ -1,72 +1,33 @@
 use core::iter::Peekable;
 use std::vec::IntoIter;
 
-#[derive(PartialEq, Debug)]
-pub enum TokenKind {
-    Int,
-    Identifier,
+use strum::EnumDiscriminants;
 
-    Assign,
-    Plus,
-    Minus,
-    Mul,
-    Div,
-    Pow,
-
-    LParen,
-    RParen,
-    Comma,
-    Bar,
-
-    Fn,
-
-    Eof,
-}
-
-#[derive(Debug, PartialEq, Eq)]
+/// List of possible tokens
+///
+/// Enum discriminants automatically generates tokenkind from this
+#[derive(Debug, Clone, PartialEq, Eq, EnumDiscriminants)]
+#[strum_discriminants(name(TokenKind))]
 pub enum Token {
     Int(isize),
     Identifier(String),
-
-    // Operators
     Assign,
     Plus,
     Minus,
     Mul,
     Div,
     Pow,
-
     LParen,
     RParen,
     Comma,
     Bar,
-
     Fn,
-
     Eof,
 }
+
 impl Token {
     pub fn kind(&self) -> TokenKind {
-        match self {
-            Token::Int(_) => TokenKind::Int,
-            Token::Identifier(_) => TokenKind::Identifier,
-
-            Token::Assign => TokenKind::Assign,
-            Token::Plus => TokenKind::Plus,
-            Token::Minus => TokenKind::Minus,
-            Token::Mul => TokenKind::Mul,
-            Token::Div => TokenKind::Div,
-            Token::Pow => TokenKind::Pow,
-
-            Token::LParen => TokenKind::LParen,
-            Token::RParen => TokenKind::RParen,
-            Token::Comma => TokenKind::Comma,
-            Token::Bar => TokenKind::Bar,
-
-            Token::Fn => TokenKind::Fn,
-
-            Token::Eof => TokenKind::Eof,
-        }
+        TokenKind::from(self)
     }
 }
 
@@ -81,7 +42,7 @@ impl Lexer {
     where
         T: ToString,
     {
-        return Self {
+        Self {
             text: text
                 .to_string()
                 .chars()
@@ -89,14 +50,14 @@ impl Lexer {
                 .into_iter()
                 .peekable(),
             position: 0,
-        };
+        }
     }
     fn read_char(&mut self) -> Option<char> {
         self.position += 1;
-        return self.text.next();
+        self.text.next()
     }
     fn peek_char(&mut self) -> Option<&char> {
-        return self.text.peek();
+        self.text.peek()
     }
     fn parse_int(&mut self, c: char) -> Token {
         let mut s = String::new();
@@ -106,19 +67,19 @@ impl Lexer {
             s.push(self.read_char().unwrap());
         }
 
-        return Token::Int(s.parse::<isize>().expect("Failed to parse integer"));
+        Token::Int(s.parse::<isize>().expect("Failed to parse integer"))
     }
     fn parse_identifier(&mut self, c: char) -> Token {
         let mut s = String::new();
         s.push(c);
 
-        while let Some('a'..'z') = self.peek_char() {
+        while let Some('a'..='z') = self.peek_char() {
             s.push(self.read_char().unwrap());
         }
-        return match s.as_str() {
+        match s.as_str() {
             "fn" => Token::Fn,
             _ => Token::Identifier(s),
-        };
+        }
     }
     fn next_token(&mut self) -> Option<Token> {
         self.skip_whitespace();
@@ -143,7 +104,7 @@ impl Lexer {
             return Some(token);
         }
 
-        return None;
+        None
     }
     fn skip_whitespace(&mut self) {
         while let Some(c) = self.peek_char() {
@@ -158,7 +119,7 @@ impl Lexer {
 impl Iterator for Lexer {
     type Item = Token;
     fn next(&mut self) -> Option<Self::Item> {
-        return self.next_token();
+        self.next_token()
     }
 }
 
