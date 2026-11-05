@@ -83,6 +83,7 @@ fn resolve_expr(
             }
         }
         Expression::Int(_) => {}
+        Expression::Float(_) => {}
         Expression::List(items) => {
             for i in items {
                 resolve_expr(i, namespace, defined, locals);

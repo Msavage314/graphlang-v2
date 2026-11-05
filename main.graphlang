@@ -3,3 +3,4 @@ namespace Hello {
     a = 2
     y = a
 }
+b = 2.2

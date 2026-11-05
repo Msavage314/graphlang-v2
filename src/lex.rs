@@ -16,6 +16,7 @@ macro_rules! characters {
 pub enum Token {
     Int(isize),
     Identifier(String),
+    Float(String),
     Assign,
     Plus,
     Minus,
@@ -79,8 +80,27 @@ impl Lexer {
         while let Some(characters!()) = self.peek_char() {
             s.push(self.read_char().unwrap());
         }
+        if let Some('.') = self.peek_char() {
+            self.read_char();
+            return self.parse_fraction(s);
+        }
 
         Token::Int(s.parse::<isize>().expect("Failed to parse integer"))
+    }
+    fn parse_fraction(&mut self, mut s: String) -> Token {
+        if s.is_empty() {
+            s.push('0');
+        }
+        s.push('.');
+        let mut digits = 0;
+        while let Some('0'..='9') = self.peek_char() {
+            s.push(self.read_char().unwrap());
+            digits += 1;
+        }
+        if digits == 0 {
+            panic!("Expected digits after decimal point in '{s}'")
+        }
+        Token::Float(s)
     }
     fn parse_identifier(&mut self, c: char) -> Token {
         let mut s = String::new();

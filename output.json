@@ -41,6 +41,12 @@
         "folderId": "2",
         "color": "#3b8b2e",
         "latex": "y = H_{elloa}"
+      },
+      {
+        "type": "expression",
+        "id": "5",
+        "color": "#3b8b2e",
+        "latex": "b = 2.2"
       }
     ]
   },

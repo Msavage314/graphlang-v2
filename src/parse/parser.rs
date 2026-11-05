@@ -143,6 +143,7 @@ impl Parser {
     fn parse_primary(&mut self) -> ParserResult<Expression> {
         match self.advance() {
             Token::Int(value) => Ok(Expression::Int(value)),
+            Token::Float(value) => Ok(Expression::Float(value)),
             Token::Identifier(first) => {
                 let ident = if self.eat(TokenKind::Dot) {
                     let second = self.expect_identifier()?;

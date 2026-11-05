@@ -53,6 +53,7 @@ impl ToLatex for Statement {
 pub enum Expression {
     Parentheses(Box<Expression>),
     Abs(Box<Expression>),
+    Float(String),
     /// An integer. Contains an isize
     Int(isize),
     /// An identifier. Can only contain lowercase characters for now
@@ -139,6 +140,7 @@ impl ToLatex for Expression {
                     .join(",");
                 format!("{}\\left[{index}\\right]", target.to_latex())
             }
+            Expression::Float(i) => i.clone(),
         }
     }
 }
