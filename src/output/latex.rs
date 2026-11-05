@@ -4,6 +4,7 @@ pub trait ToLatex {
     fn to_latex(&self) -> String;
 }
 pub fn ident_to_latex(name: &str) -> String {
+    let name = name.replace('.', "");
     if name.len() == 1 {
         name.to_string()
     } else {

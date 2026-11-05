@@ -143,7 +143,13 @@ impl Parser {
     fn parse_primary(&mut self) -> ParserResult<Expression> {
         match self.advance() {
             Token::Int(value) => Ok(Expression::Int(value)),
-            Token::Identifier(ident) => {
+            Token::Identifier(first) => {
+                let ident = if self.eat(TokenKind::Dot) {
+                    let second = self.expect_identifier()?;
+                    format!("{first}.{second}")
+                } else {
+                    first
+                };
                 if self.eat(TokenKind::LParen) {
                     let mut args = Vec::new();
                     if !self.eat(TokenKind::RParen) {

@@ -55,8 +55,11 @@ impl ToLatex for Statement {
 pub enum Expression {
     Parentheses(Box<Expression>),
     Abs(Box<Expression>),
+    /// An integer. Contains an isize
     Int(isize),
+    /// An identifier. Can only contain lowercase characters for now
     Identifier(String),
+    /// A bianry operation, such as 1 + 1.
     Binary {
         left: Box<Expression>,
         op: BinaryOp,

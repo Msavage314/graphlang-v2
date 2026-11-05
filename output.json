@@ -18,127 +18,29 @@
   "expressions": {
     "list": [
       {
-        "type": "text",
+        "type": "expression",
         "id": "1",
-        "text": " Demonstration of graphlangs current abilities"
-      },
-      {
-        "type": "text",
-        "id": "2",
-        "text": " comments are translated into desmos notes"
-      },
-      {
-        "type": "text",
-        "id": "3",
-        "text": " variables are automatically subscripted, so first becomes f_irst"
-      },
-      {
-        "type": "expression",
-        "id": "4",
-        "color": "#3b8b2e",
-        "latex": "f_{irst} = 1"
-      },
-      {
-        "type": "expression",
-        "id": "5",
-        "color": "#3b8b2e",
-        "latex": "s_{econd} = 2"
-      },
-      {
-        "type": "text",
-        "id": "6",
-        "text": " points"
-      },
-      {
-        "type": "expression",
-        "id": "7",
-        "color": "#3b8b2e",
-        "latex": "p = \\left(1,2\\right)"
-      },
-      {
-        "type": "text",
-        "id": "8",
-        "text": " lists"
-      },
-      {
-        "type": "expression",
-        "id": "9",
-        "color": "#3b8b2e",
-        "latex": "n = \\left[1,2,3\\right]"
-      },
-      {
-        "type": "text",
-        "id": "10",
-        "text": " list access"
-      },
-      {
-        "type": "expression",
-        "id": "11",
-        "color": "#3b8b2e",
-        "latex": "a = n\\left[1\\right]"
-      },
-      {
-        "type": "text",
-        "id": "12",
-        "text": " namespaces map to desmos folders"
-      },
-      {
-        "type": "folder",
-        "id": "13",
-        "title": "hello"
-      },
-      {
-        "type": "expression",
-        "id": "14",
-        "folderId": "13",
         "color": "#3b8b2e",
         "latex": "a = 1"
       },
       {
-        "type": "text",
-        "id": "15",
-        "text": " functions"
+        "type": "folder",
+        "id": "2",
+        "title": "hello"
       },
       {
         "type": "expression",
-        "id": "16",
+        "id": "3",
+        "folderId": "2",
         "color": "#3b8b2e",
-        "latex": "f_{irstdd}\\left(f_{irst},s_{econd}\\right)=f_{irst}+s_{econd}"
+        "latex": "h_{elloa} = 2"
       },
       {
         "type": "expression",
-        "id": "17",
+        "id": "4",
+        "folderId": "2",
         "color": "#3b8b2e",
-        "latex": "s_{ub}\\left(f_{irst},s_{econd}\\right)=f_{irst}-s_{econd}"
-      },
-      {
-        "type": "expression",
-        "id": "18",
-        "color": "#3b8b2e",
-        "latex": "m_{ul}\\left(f_{irst},s_{econd}\\right)=f_{irst}\\cdot s_{econd}"
-      },
-      {
-        "type": "expression",
-        "id": "19",
-        "color": "#3b8b2e",
-        "latex": "d_{iv}\\left(f_{irst},s_{econd}\\right)=\\frac{f_{irst}}{s_{econd}}"
-      },
-      {
-        "type": "expression",
-        "id": "20",
-        "color": "#3b8b2e",
-        "latex": "p_{ow}\\left(f_{irst},s_{econd}\\right)={f_{irst}}^{s_{econd}}"
-      },
-      {
-        "type": "text",
-        "id": "21",
-        "text": " supports absolute value"
-      },
-      {
-        "type": "expression",
-        "id": "22",
-        "color": "#3b8b2e",
-        "latex": "a_{bs}\\left(f_{irst}\\right)=\\left| f_{irst} \\right|"
+        "latex": "y = h_{elloa}"
       }
     ]
   },

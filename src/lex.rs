@@ -30,6 +30,7 @@ pub enum Token {
     RBrace,
     Comment(String),
     Namespace,
+    Dot,
 }
 
 impl Token {
@@ -119,6 +120,7 @@ impl Lexer {
                 ']' => Token::RBracket,
                 '{' => Token::LBrace,
                 '}' => Token::RBrace,
+                '.' => Token::Dot,
                 _ => panic!("Unknown char {c}"),
             };
             return Some(token);

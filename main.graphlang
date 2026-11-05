@@ -1,35 +1,5 @@
-
-# Demonstration of graphlangs current abilities
-
-# comments are translated into desmos notes
-
-# variables are automatically subscripted, so first becomes f_irst
-first = 1
-second = 2
-
-# points
-p = (1,2)
-
-# lists
-n = [1,2,3]
-
-# list access
-a = n[1]
-
-
-# namespaces map to desmos folders
+a = 1
 namespace hello {
-    a = 1 
+    a = 2
+    y = a
 }
-
-# functions
-fn firstdd(first,second) = first + second
-fn sub(first,second) = first - second
-fn mul(first,second) = first * second
-fn div(first,second) = first / second
-fn pow(first,second) = first ^ second
-
-# supports absolute value
-fn abs(first) = | first |
-
-
