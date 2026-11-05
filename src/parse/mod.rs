@@ -160,8 +160,14 @@ impl Parser {
             }
             Token::LParen => {
                 let expr = self.parse_expr_stmt()?;
-                self.expect(TokenKind::RParen)?;
-                Ok(Expression::Parentheses(Box::new(expr)))
+                if self.eat(TokenKind::Comma) {
+                    let second = self.parse_expr_stmt()?;
+                    self.expect(TokenKind::RParen)?;
+                    Ok(Expression::Point(Box::new(expr), Box::new(second)))
+                } else {
+                    self.expect(TokenKind::RParen)?;
+                    Ok(Expression::Parentheses(Box::new(expr)))
+                }
             }
             Token::Bar => {
                 let expr = self.parse_expr_stmt()?;

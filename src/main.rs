@@ -23,5 +23,6 @@ fn main() -> Result<(), Box<dyn Error>> {
     fs::write("./output.json", &output).expect("Failed to write to file");
     //println!("{output}");
     clipboard_anywhere::set_clipboard(&output).expect("Failed to copy to clipboard");
+    println!("Done");
     Ok(())
 }
