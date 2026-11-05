@@ -1,4 +1,6 @@
-use crate::lex::TokenKind;
+use core::fmt::write;
+
+use crate::lex::{Token::Int, TokenKind};
 
 #[derive(Debug)]
 pub enum ParseError {
@@ -38,11 +40,13 @@ pub type ParserResult<T> = Result<T, ParseError>;
 #[derive(Debug)]
 pub enum InterpretError {
     InvalidSyntax,
+    NestedNamespace,
 }
 impl core::fmt::Display for InterpretError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            &Self::InvalidSyntax => write!(f, "Interpret Error - invalid syntax")?,
+            &InterpretError::InvalidSyntax => write!(f, "Interpret Error - invalid syntax")?,
+            &InterpretError::NestedNamespace => write!(f, "Interpret Error - Nested Namespace")?,
         }
         Ok(())
     }

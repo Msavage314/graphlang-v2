@@ -16,6 +16,12 @@ n = [1,2,3]
 # list access
 a = n[1]
 
+
+# namespaces map to desmos folders
+namespace hello {
+    a = 1 
+}
+
 # functions
 fn firstdd(first,second) = first + second
 fn sub(first,second) = first - second

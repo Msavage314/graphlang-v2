@@ -20,6 +20,10 @@ pub enum Statement {
         value: Expression,
     },
     Comment(String),
+    Namespace {
+        name: String,
+        stmts: Vec<Statement>,
+    },
 }
 impl ToLatex for Statement {
     fn to_latex(&self) -> String {
@@ -42,6 +46,7 @@ impl ToLatex for Statement {
             }
             // TODO Potentially change this section somehow?
             Statement::Comment(_) => panic!("Comment doesn't support latex"),
+            Statement::Namespace { name: _, stmts: _ } => panic!("Namespace doesn't support latex"),
         }
     }
 }

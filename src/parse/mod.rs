@@ -66,6 +66,9 @@ impl Parser {
         if self.peek().kind() == TokenKind::Fn {
             return self.parse_function();
         }
+        if self.peek().kind() == TokenKind::Namespace {
+            return self.parse_namespace();
+        }
         if self.peek().kind() == TokenKind::Comment {
             let Token::Comment(text) = self.advance() else {
                 unreachable!()
@@ -175,7 +178,7 @@ impl Parser {
                 Ok(Expression::Abs(Box::new(expr)))
             }
             Token::LBracket => {
-                let mut items = self.parse_list_items()?;
+                let items = self.parse_list_items()?;
                 return Ok(Expression::List(items));
             }
             Token::Eof => Err(ParseError::UnexpectedEof),
@@ -208,5 +211,22 @@ impl Parser {
             };
         }
         Ok(expr)
+    }
+
+    fn parse_namespace(&mut self) -> ParserResult<Statement> {
+        self.expect(TokenKind::Namespace)?;
+        let name = self.expect_identifier()?;
+        self.expect(TokenKind::LBrace)?;
+
+        let mut stmts = Vec::new();
+        while self.peek().kind() != TokenKind::RBrace {
+            if self.peek().kind() == TokenKind::Eof {
+                return Err(ParseError::UnexpectedEof);
+            }
+            stmts.push(self.parse_stmt()?);
+        }
+        self.expect(TokenKind::RBrace)?;
+
+        Ok(Statement::Namespace { name, stmts })
     }
 }

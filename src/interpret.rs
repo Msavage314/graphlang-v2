@@ -29,8 +29,19 @@ impl Interpreter {
     fn interpret_statement(output: &mut GraphOutput, stmt: &Statement) -> InterpretResult {
         match stmt {
             Statement::Comment(c) => {
-                output.add_note();
-                output.expressions.list.last_mut().unwrap().add_text(c);
+                output.add_note(c);
+                Ok(())
+            }
+            Statement::Namespace { name, stmts } => {
+                if output.current_folder.is_some() {
+                    return Err(InterpretError::NestedNamespace);
+                }
+                let id = output.add_folder(name);
+                output.current_folder = Some(id);
+                for s in stmts {
+                    Self::interpret_statement(output, s)?;
+                }
+                output.current_folder = None;
                 Ok(())
             }
             _ => {

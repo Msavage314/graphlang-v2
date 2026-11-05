@@ -64,7 +64,7 @@
         "type": "expression",
         "id": "9",
         "color": "#3b8b2e",
-        "latex": "p = \\left[1,2,3\\right]"
+        "latex": "n = \\left[1,2,3\\right]"
       },
       {
         "type": "text",
@@ -75,51 +75,68 @@
         "type": "expression",
         "id": "11",
         "color": "#3b8b2e",
-        "latex": "a = p\\left[1\\right]"
+        "latex": "a = n\\left[1\\right]"
       },
       {
         "type": "text",
         "id": "12",
-        "text": " functions"
+        "text": " namespaces map to desmos folders"
       },
       {
-        "type": "expression",
+        "type": "folder",
         "id": "13",
-        "color": "#3b8b2e",
-        "latex": "f_{irstdd}\\left(f_{irst},s_{econd}\\right)=f_{irst}+s_{econd}"
+        "title": "hello"
       },
       {
         "type": "expression",
         "id": "14",
+        "folderId": "13",
         "color": "#3b8b2e",
-        "latex": "s_{ub}\\left(f_{irst},s_{econd}\\right)=f_{irst}-s_{econd}"
+        "latex": "a = 1"
       },
       {
-        "type": "expression",
+        "type": "text",
         "id": "15",
-        "color": "#3b8b2e",
-        "latex": "m_{ul}\\left(f_{irst},s_{econd}\\right)=f_{irst}\\cdot s_{econd}"
+        "text": " functions"
       },
       {
         "type": "expression",
         "id": "16",
         "color": "#3b8b2e",
-        "latex": "d_{iv}\\left(f_{irst},s_{econd}\\right)=\\frac{f_{irst}}{s_{econd}}"
+        "latex": "f_{irstdd}\\left(f_{irst},s_{econd}\\right)=f_{irst}+s_{econd}"
       },
       {
         "type": "expression",
         "id": "17",
         "color": "#3b8b2e",
-        "latex": "p_{ow}\\left(f_{irst},s_{econd}\\right)={f_{irst}}^{s_{econd}}"
+        "latex": "s_{ub}\\left(f_{irst},s_{econd}\\right)=f_{irst}-s_{econd}"
       },
       {
-        "type": "text",
+        "type": "expression",
         "id": "18",
-        "text": " supports absolute value"
+        "color": "#3b8b2e",
+        "latex": "m_{ul}\\left(f_{irst},s_{econd}\\right)=f_{irst}\\cdot s_{econd}"
       },
       {
         "type": "expression",
         "id": "19",
+        "color": "#3b8b2e",
+        "latex": "d_{iv}\\left(f_{irst},s_{econd}\\right)=\\frac{f_{irst}}{s_{econd}}"
+      },
+      {
+        "type": "expression",
+        "id": "20",
+        "color": "#3b8b2e",
+        "latex": "p_{ow}\\left(f_{irst},s_{econd}\\right)={f_{irst}}^{s_{econd}}"
+      },
+      {
+        "type": "text",
+        "id": "21",
+        "text": " supports absolute value"
+      },
+      {
+        "type": "expression",
+        "id": "22",
         "color": "#3b8b2e",
         "latex": "a_{bs}\\left(f_{irst}\\right)=\\left| f_{irst} \\right|"
       }

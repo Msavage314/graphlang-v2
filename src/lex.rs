@@ -26,7 +26,10 @@ pub enum Token {
     Hash,
     LBracket,
     RBracket,
+    LBrace,
+    RBrace,
     Comment(String),
+    Namespace,
 }
 
 impl Token {
@@ -82,6 +85,7 @@ impl Lexer {
         }
         match s.as_str() {
             "fn" => Token::Fn,
+            "namespace" => Token::Namespace,
             _ => Token::Identifier(s),
         }
     }
@@ -113,6 +117,8 @@ impl Lexer {
                 '|' => Token::Bar,
                 '[' => Token::LBracket,
                 ']' => Token::RBracket,
+                '{' => Token::LBrace,
+                '}' => Token::RBrace,
                 _ => panic!("Unknown char {c}"),
             };
             return Some(token);
