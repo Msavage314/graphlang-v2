@@ -59,6 +59,7 @@ pub enum Expression {
         name: String,
         args: Vec<Expression>,
     },
+    Point(Box<Expression>, Box<Expression>),
 }
 
 impl ToLatex for Expression {
@@ -103,6 +104,9 @@ impl ToLatex for Expression {
                     .join(",");
 
                 format!("{name}\\left({args}\\right)")
+            }
+            Expression::Point(x, y) => {
+                format!("\\left({},{}\\right)", x.to_latex(), y.to_latex())
             }
         }
     }

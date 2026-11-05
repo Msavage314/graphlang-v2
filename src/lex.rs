@@ -97,7 +97,6 @@ impl Lexer {
                         }
                         string.push(self.read_char().unwrap());
                     }
-                    println!("Comment here!");
                     Token::Comment(string)
                 }
                 '=' => Token::Assign,

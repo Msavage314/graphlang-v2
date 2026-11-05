@@ -1,8 +1,16 @@
 
+# Demonstration of graphlangs current abilities
+
 # comments are translated into desmos notes
+
+# variables are automatically subscripted, so first becomes f_irst
 first = 1
 second = 2
 
+# points
+p = (1,2)
+
+# functions
 fn firstdd(first,second) = first + second
 fn sub(first,second) = first - second
 fn mul(first,second) = first * second
@@ -11,4 +19,4 @@ fn pow(first,second) = first ^ second
 
 fn abs(first) = | first |
 
-x = 2
+
