@@ -115,7 +115,7 @@ impl Parser {
         }
     }
     fn parse_expr_stmt(&mut self) -> ParserResult<Expression> {
-        let mut left = self.parse_primary()?;
+        let mut left = self.parse_postfix()?;
         loop {
             let op = match self.peek() {
                 Token::Plus => BinaryOp::Add,
@@ -127,7 +127,7 @@ impl Parser {
             };
             // Skip over the operator now we know there is one
             self.advance();
-            let right = self.parse_primary()?;
+            let right = self.parse_postfix()?;
             left = Expression::Binary {
                 left: Box::new(left),
                 op,
@@ -175,18 +175,7 @@ impl Parser {
                 Ok(Expression::Abs(Box::new(expr)))
             }
             Token::LBracket => {
-                let mut items = Vec::new();
-                if self.eat(TokenKind::RBracket) {
-                    return Ok(Expression::List(items));
-                }
-                loop {
-                    let expr = self.parse_expr_stmt()?;
-                    items.push(expr);
-                    if !self.eat(TokenKind::Comma) {
-                        break;
-                    }
-                }
-                self.expect(TokenKind::RBracket)?;
+                let mut items = self.parse_list_items()?;
                 return Ok(Expression::List(items));
             }
             Token::Eof => Err(ParseError::UnexpectedEof),
@@ -194,5 +183,30 @@ impl Parser {
                 found: token.kind(),
             }),
         }
+    }
+    fn parse_list_items(&mut self) -> ParserResult<Vec<Expression>> {
+        let mut items = Vec::new();
+        if !self.eat(TokenKind::RBracket) {
+            loop {
+                items.push(self.parse_expr_stmt()?);
+                if self.eat(TokenKind::Comma) {
+                    continue;
+                }
+                self.expect(TokenKind::RBracket)?;
+                break;
+            }
+        }
+        Ok(items)
+    }
+    fn parse_postfix(&mut self) -> ParserResult<Expression> {
+        let mut expr = self.parse_primary()?;
+        while self.eat(TokenKind::LBracket) {
+            let index = self.parse_list_items()?;
+            expr = Expression::Index {
+                target: Box::new(expr),
+                index,
+            };
+        }
+        Ok(expr)
     }
 }

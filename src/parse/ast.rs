@@ -1,3 +1,5 @@
+use std::fmt::format;
+
 use crate::output::latex::{ToLatex, ident_to_latex};
 
 #[derive(Debug, Clone)]
@@ -61,6 +63,10 @@ pub enum Expression {
     },
     Point(Box<Expression>, Box<Expression>),
     List(Vec<Expression>),
+    Index {
+        target: Box<Expression>,
+        index: Vec<Expression>,
+    },
 }
 
 impl ToLatex for Expression {
@@ -118,6 +124,14 @@ impl ToLatex for Expression {
                         .collect::<Vec<_>>()
                         .join(",")
                 )
+            }
+            Expression::Index { target, index } => {
+                let index = index
+                    .iter()
+                    .map(|e| e.to_latex())
+                    .collect::<Vec<_>>()
+                    .join(",");
+                format!("{}\\left[{index}\\right]", target.to_latex())
             }
         }
     }

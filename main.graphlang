@@ -11,7 +11,10 @@ second = 2
 p = (1,2)
 
 # lists
-p = [1,2,3]
+n = [1,2,3]
+
+# list access
+a = n[1]
 
 # functions
 fn firstdd(first,second) = first + second
