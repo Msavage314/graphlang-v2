@@ -7,7 +7,7 @@ pub mod semantic;
 use core::error::Error;
 use std::{env::args, fs};
 
-use crate::{parse::Parser, semantic::resolve};
+use crate::{parse::parser::Parser, semantic::resolve};
 
 fn main() -> Result<(), Box<dyn Error>> {
     let args: Vec<String> = args().collect();

@@ -3,6 +3,11 @@ use std::vec::IntoIter;
 
 use strum::EnumDiscriminants;
 
+macro_rules! characters {
+    () => {
+        'a'..='z' | 'A'..='Z'
+    };
+}
 /// List of possible tokens
 ///
 /// Enum discriminants automatically generates tokenkind from this
@@ -71,7 +76,7 @@ impl Lexer {
         let mut s = String::new();
         s.push(c);
 
-        while let Some('0'..='9') = self.peek_char() {
+        while let Some(characters!()) = self.peek_char() {
             s.push(self.read_char().unwrap());
         }
 
@@ -81,7 +86,7 @@ impl Lexer {
         let mut s = String::new();
         s.push(c);
 
-        while let Some('a'..='z') = self.peek_char() {
+        while let Some(characters!()) = self.peek_char() {
             s.push(self.read_char().unwrap());
         }
         match s.as_str() {
@@ -95,7 +100,7 @@ impl Lexer {
         if let Some(c) = self.read_char() {
             let token = match c {
                 '0'..='9' => self.parse_int(c),
-                'a'..='z' => self.parse_identifier(c),
+                characters!() => self.parse_identifier(c),
                 '#' => {
                     let mut string = String::new();
                     while let Some(c) = self.peek_char() {

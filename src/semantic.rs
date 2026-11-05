@@ -1,8 +1,8 @@
-use std::{collections::HashSet, fmt::format};
+use std::collections::HashSet;
 
 use crate::parse::ast::{Expression, Program, Statement};
 
-const BUILTINS: &[&str] = &["x", "y"];
+const BUILTINS: &[&str] = &["x", "y", "t"];
 
 fn is_builtin(name: &str) -> bool {
     BUILTINS.contains(&name)
@@ -19,10 +19,10 @@ fn resolve_namespace(ns: &str, stmts: &mut [Statement]) {
     let mut defined = HashSet::new();
     for s in stmts.iter() {
         match s {
-            Statement::Assignment { name, .. } | Statement::FunctionDef { name, .. } => {
-                if !is_builtin(name) {
-                    defined.insert(name.clone());
-                }
+            Statement::Assignment { name, .. } | Statement::FunctionDef { name, .. }
+                if !is_builtin(name) =>
+            {
+                defined.insert(name.clone());
             }
             _ => {}
         }

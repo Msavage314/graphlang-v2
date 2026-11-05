@@ -1,5 +1,5 @@
 a = 1
-namespace hello {
+namespace Hello {
     a = 2
     y = a
 }

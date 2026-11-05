@@ -7,6 +7,7 @@ A programming language which compiles to desmos.
 - Lists
 - Functions
 - Namespaces
+- Proper scoping
 
 #### Future features
 - Macros

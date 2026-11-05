@@ -26,21 +26,21 @@
       {
         "type": "folder",
         "id": "2",
-        "title": "hello"
+        "title": "Hello"
       },
       {
         "type": "expression",
         "id": "3",
         "folderId": "2",
         "color": "#3b8b2e",
-        "latex": "h_{elloa} = 2"
+        "latex": "H_{elloa} = 2"
       },
       {
         "type": "expression",
         "id": "4",
         "folderId": "2",
         "color": "#3b8b2e",
-        "latex": "y = h_{elloa}"
+        "latex": "y = H_{elloa}"
       }
     ]
   },
