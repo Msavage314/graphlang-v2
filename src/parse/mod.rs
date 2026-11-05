@@ -174,6 +174,21 @@ impl Parser {
                 self.expect(TokenKind::Bar)?;
                 Ok(Expression::Abs(Box::new(expr)))
             }
+            Token::LBracket => {
+                let mut items = Vec::new();
+                if self.eat(TokenKind::RBracket) {
+                    return Ok(Expression::List(items));
+                }
+                loop {
+                    let expr = self.parse_expr_stmt()?;
+                    items.push(expr);
+                    if !self.eat(TokenKind::Comma) {
+                        break;
+                    }
+                }
+                self.expect(TokenKind::RBracket)?;
+                return Ok(Expression::List(items));
+            }
             Token::Eof => Err(ParseError::UnexpectedEof),
             token => Err(ParseError::ExpectedExpression {
                 found: token.kind(),

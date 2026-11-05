@@ -24,6 +24,8 @@ pub enum Token {
     Fn,
     Eof,
     Hash,
+    LBracket,
+    RBracket,
     Comment(String),
 }
 
@@ -109,6 +111,8 @@ impl Lexer {
                 ')' => Token::RParen,
                 ',' => Token::Comma,
                 '|' => Token::Bar,
+                '[' => Token::LBracket,
+                ']' => Token::RBracket,
                 _ => panic!("Unknown char {c}"),
             };
             return Some(token);

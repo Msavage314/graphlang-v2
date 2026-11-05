@@ -10,6 +10,9 @@ second = 2
 # points
 p = (1,2)
 
+# lists
+p = [1,2,3]
+
 # functions
 fn firstdd(first,second) = first + second
 fn sub(first,second) = first - second
@@ -17,6 +20,7 @@ fn mul(first,second) = first * second
 fn div(first,second) = first / second
 fn pow(first,second) = first ^ second
 
+# supports absolute value
 fn abs(first) = | first |
 
 

@@ -60,6 +60,7 @@ pub enum Expression {
         args: Vec<Expression>,
     },
     Point(Box<Expression>, Box<Expression>),
+    List(Vec<Expression>),
 }
 
 impl ToLatex for Expression {
@@ -107,6 +108,16 @@ impl ToLatex for Expression {
             }
             Expression::Point(x, y) => {
                 format!("\\left({},{}\\right)", x.to_latex(), y.to_latex())
+            }
+            Expression::List(items) => {
+                format!(
+                    "\\left[{}\\right]",
+                    items
+                        .iter()
+                        .map(|e| e.to_latex())
+                        .collect::<Vec<_>>()
+                        .join(",")
+                )
             }
         }
     }
