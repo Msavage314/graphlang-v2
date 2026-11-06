@@ -1,11 +1,12 @@
 //! AST transformer which verifies scoping
-use crate::parse::ast::{Expression, Program, Statement};
+use crate::{
+    output::latex::BUILTINS,
+    parse::ast::{Expression, Program, Statement},
+};
 use std::collections::HashSet;
 
-const BUILTINS: &[&str] = &["x", "y", "t", "sin", "cos", "tan", "polygon"];
-
 fn is_builtin(name: &str) -> bool {
-    BUILTINS.contains(&name)
+    BUILTINS.iter().any(|(n, _)| *n == name)
 }
 pub fn resolve(program: &mut Program) {
     for stmt in program.statements.iter_mut() {

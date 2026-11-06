@@ -1,6 +1,6 @@
 //! Deals with latex representation
 
-const BUILTINS: &[(&str, &str)] = &[
+pub const BUILTINS: &[(&str, &str)] = &[
     ("x", "x"),
     ("y", "y"),
     ("t", "t"),
