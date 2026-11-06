@@ -13,3 +13,10 @@ macro Rectangle($name) {
 
 Rectangle!(A)
 
+namespace A {
+    Xpos = 1
+        Ypos = 1
+        Width = 1
+        Height = 1
+        polygon((Xpos - (Width / 2), Ypos - (Height /2 )),(Xpos + (Width / 2), Ypos - (Height /2 )),(Xpos + (Width / 2), Ypos + (Height /2 )),(Xpos - (Width / 2), Ypos + (Height /2 )))
+}

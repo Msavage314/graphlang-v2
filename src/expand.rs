@@ -16,7 +16,7 @@ pub fn expand(program: &mut Program) -> Result<(), ExpandError> {
     for s in program.statements.drain(..) {
         match s {
             Statement::MacroDef { name, params, body } => {
-                macros.insert(name, (params, body));
+                macros.insert(format!("{name}!"), (params, body));
             }
             other => rest.push(other),
         }
@@ -39,6 +39,8 @@ fn expand_stmts(
     for s in stmts {
         match s {
             Statement::MacroCall { name, args } => {
+                println!("Finding macro {name}");
+                println!("macros are currently {macros:?}");
                 let (params, body) = macros.get(&name).ok_or(ExpandError::UnknownMacro)?;
                 if params.len() != args.len() {
                     return Err(ExpandError::WrongArgCount);
