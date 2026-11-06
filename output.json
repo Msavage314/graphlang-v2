@@ -18,35 +18,44 @@
   "expressions": {
     "list": [
       {
-        "type": "expression",
+        "type": "folder",
         "id": "1",
-        "color": "#3b8b2e",
-        "latex": "a = 1"
+        "title": "Rectangle"
       },
       {
-        "type": "folder",
+        "type": "expression",
         "id": "2",
-        "title": "Hello"
+        "folderId": "1",
+        "color": "#3b8b2e",
+        "latex": "R_{ectangleXpos} = 1"
       },
       {
         "type": "expression",
         "id": "3",
-        "folderId": "2",
+        "folderId": "1",
         "color": "#3b8b2e",
-        "latex": "H_{elloa} = 2"
+        "latex": "R_{ectangleYpos} = 1"
       },
       {
         "type": "expression",
         "id": "4",
-        "folderId": "2",
+        "folderId": "1",
         "color": "#3b8b2e",
-        "latex": "y = H_{elloa}"
+        "latex": "R_{ectangleWidth} = 1"
       },
       {
         "type": "expression",
         "id": "5",
+        "folderId": "1",
         "color": "#3b8b2e",
-        "latex": "b = 2.2"
+        "latex": "R_{ectangleHeight} = 1"
+      },
+      {
+        "type": "expression",
+        "id": "6",
+        "folderId": "1",
+        "color": "#3b8b2e",
+        "latex": "\\operatorname{polygon}\\left(\\left(R_{ectangleXpos}-\\left( \\frac{R_{ectangleWidth}}{2} \\right),R_{ectangleYpos}-\\left( \\frac{R_{ectangleHeight}}{2} \\right)\\right),\\left(R_{ectangleXpos}+\\left( \\frac{R_{ectangleWidth}}{2} \\right),R_{ectangleYpos}-\\left( \\frac{R_{ectangleHeight}}{2} \\right)\\right),\\left(R_{ectangleXpos}+\\left( \\frac{R_{ectangleWidth}}{2} \\right),R_{ectangleYpos}+\\left( \\frac{R_{ectangleHeight}}{2} \\right)\\right),\\left(R_{ectangleXpos}-\\left( \\frac{R_{ectangleWidth}}{2} \\right),R_{ectangleYpos}+\\left( \\frac{R_{ectangleHeight}}{2} \\right)\\right)\\right)"
       }
     ]
   },

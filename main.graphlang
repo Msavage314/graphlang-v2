@@ -1,6 +1,7 @@
-a = 1
-namespace Hello {
-    a = 2
-    y = a
+namespace Rectangle {
+    Xpos = 1
+    Ypos = 1
+    Width = 1
+    Height = 1
+    polygon((Xpos - (Width / 2), Ypos - (Height /2 )),(Xpos + (Width / 2), Ypos - (Height /2 )),(Xpos + (Width / 2), Ypos + (Height /2 )),(Xpos - (Width / 2), Ypos + (Height /2 )))
 }
-b = 2.2
