@@ -41,6 +41,8 @@ pub enum Token {
     Macro,
     /// Different to identifier, as contains !
     MacroCall(String),
+    If,
+    Else,
 
     Hash,
     Comma,
@@ -131,6 +133,8 @@ impl Lexer {
             "fn" => Token::Fn,
             "namespace" => Token::Namespace,
             "macro" => Token::Macro,
+            "if" => Token::If,
+            "else" => Token::Else,
             _ => Token::Identifier(s),
         }
     }
