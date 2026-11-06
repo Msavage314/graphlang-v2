@@ -37,7 +37,6 @@ p = (Square.xPos,Square.yPos)
 Macros can be used to generate code. For example, here is a macro which generates a rectangle at specified coordinates
 These are variable powerful, and can be used to make almost libraries
 ```
-macros
 macro Rectangle($name, $x, $y, $w, $h) {
     namespace $name {
         Xpos = $x
@@ -52,8 +51,7 @@ Rectangle!(A,1,1,1,1)
 
 A.Xpos
 ```
-- Macros
-- VScode extension (kinda)
+
 
 #### Future features
 - Style information
