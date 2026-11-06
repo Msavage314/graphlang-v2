@@ -2,7 +2,11 @@ use core::iter::Peekable;
 
 use crate::{
     errors::{ParseError, ParserResult},
-    lex::{Lexer, Token, TokenKind},
+    lex::{
+        Lexer,
+        Token::{self, Bang, MacroCall},
+        TokenKind,
+    },
     parse::ast::{BinaryOp, Expression, Program, Statement},
 };
 
@@ -75,6 +79,27 @@ impl Parser {
             };
             return Ok(Statement::Comment(text));
         }
+        if self.peek().kind() == TokenKind::Macro {
+            return self.parse_macro_def();
+        }
+        if let Token::MacroCall(_) = self.peek() {
+            let Token::MacroCall(name) = self.advance() else {
+                unreachable!()
+            };
+            self.expect(TokenKind::LParen)?;
+            let mut args = Vec::new();
+            if !self.eat(TokenKind::RParen) {
+                loop {
+                    args.push(self.parse_expr_stmt()?);
+                    if self.eat(TokenKind::Comma) {
+                        continue;
+                    }
+                    self.expect(TokenKind::RParen)?;
+                    break;
+                }
+            }
+            return Ok(Statement::MacroCall { name, args });
+        }
 
         let expr = self.parse_expr_stmt()?;
 
@@ -88,25 +113,7 @@ impl Parser {
 
         Ok(Statement::Expr(expr))
     }
-    fn parse_function(&mut self) -> ParserResult<Statement> {
-        self.expect(TokenKind::Fn)?;
-        let name = self.expect_identifier()?;
 
-        self.expect(TokenKind::LParen)?;
-        let mut params = Vec::new();
-        if self.peek().kind() != TokenKind::RParen {
-            loop {
-                params.push(self.expect_identifier()?);
-                if !self.eat(TokenKind::Comma) {
-                    break;
-                }
-            }
-        }
-        self.expect(TokenKind::RParen)?;
-        self.expect(TokenKind::Assign)?;
-        let body = self.parse_expr_stmt()?;
-        Ok(Statement::FunctionDef { name, params, body })
-    }
     fn expect_identifier(&mut self) -> ParserResult<String> {
         match self.advance() {
             Token::Identifier(name) => Ok(name),
@@ -235,5 +242,53 @@ impl Parser {
         self.expect(TokenKind::RBrace)?;
 
         Ok(Statement::Namespace { name, stmts })
+    }
+    fn parse_function(&mut self) -> ParserResult<Statement> {
+        self.expect(TokenKind::Fn)?;
+        let name = self.expect_identifier()?;
+
+        self.expect(TokenKind::LParen)?;
+        let mut params = Vec::new();
+        if self.peek().kind() != TokenKind::RParen {
+            loop {
+                params.push(self.expect_identifier()?);
+                if !self.eat(TokenKind::Comma) {
+                    break;
+                }
+            }
+        }
+        self.expect(TokenKind::RParen)?;
+        self.expect(TokenKind::Assign)?;
+        let body = self.parse_expr_stmt()?;
+        Ok(Statement::FunctionDef { name, params, body })
+    }
+    fn parse_macro_def(&mut self) -> ParserResult<Statement> {
+        self.expect(TokenKind::Macro)?;
+        let name = self.expect_identifier()?;
+        self.expect(TokenKind::LParen)?;
+        let mut params = Vec::new();
+        if self.peek().kind() != TokenKind::RParen {
+            loop {
+                params.push(self.expect_identifier()?);
+                if !self.eat(TokenKind::Comma) {
+                    break;
+                }
+            }
+        }
+        self.expect(TokenKind::RParen)?;
+        self.expect(TokenKind::LBrace)?;
+        let mut stmts = Vec::new();
+        while self.peek().kind() != TokenKind::RBrace {
+            if self.peek().kind() == TokenKind::Eof {
+                return Err(ParseError::UnexpectedEof);
+            }
+            stmts.push(self.parse_stmt()?);
+        }
+        self.expect(TokenKind::RBrace)?;
+        Ok(Statement::MacroDef {
+            name,
+            params,
+            body: stmts,
+        })
     }
 }

@@ -1,4 +1,8 @@
+//! # Overall pipeline
+//! lex -> parse to ast -> expand macros -> resolve namespaces -> interpret -> serialize
+
 pub mod errors;
+pub mod expand;
 pub mod interpret;
 pub mod lex;
 pub mod output;

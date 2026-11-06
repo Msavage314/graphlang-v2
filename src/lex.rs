@@ -3,11 +3,13 @@ use std::vec::IntoIter;
 
 use strum::EnumDiscriminants;
 
+/// Valid identifier characters
 macro_rules! characters {
     () => {
-        'a'..='z' | 'A'..='Z'
+        'a'..='z' | 'A'..='Z' | '$'
     };
 }
+
 /// List of possible tokens
 ///
 /// Enum discriminants automatically generates tokenkind from this
@@ -15,28 +17,39 @@ macro_rules! characters {
 #[strum_discriminants(name(TokenKind))]
 pub enum Token {
     Int(isize),
-    Identifier(String),
     Float(String),
+    Identifier(String),
+
     Assign,
+
     Plus,
     Minus,
     Mul,
     Div,
     Pow,
+    Bar,
+
     LParen,
     RParen,
-    Comma,
-    Bar,
-    Fn,
-    Eof,
-    Hash,
     LBracket,
     RBracket,
     LBrace,
     RBrace,
-    Comment(String),
+
+    Fn,
     Namespace,
+    Macro,
+    /// Different to identifier, as contains !
+    MacroCall(String),
+
+    Hash,
+    Comma,
     Dot,
+    Bang,
+
+    Comment(String),
+
+    Eof,
 }
 
 impl Token {
@@ -109,9 +122,15 @@ impl Lexer {
         while let Some(characters!()) = self.peek_char() {
             s.push(self.read_char().unwrap());
         }
+        if let Some('!') = self.peek_char() {
+            self.read_char();
+            s.push('!');
+            return Token::MacroCall(s);
+        }
         match s.as_str() {
             "fn" => Token::Fn,
             "namespace" => Token::Namespace,
+            "macro" => Token::Macro,
             _ => Token::Identifier(s),
         }
     }
@@ -146,6 +165,7 @@ impl Lexer {
                 '{' => Token::LBrace,
                 '}' => Token::RBrace,
                 '.' => Token::Dot,
+                '!' => Token::Bang,
                 _ => panic!("Unknown char {c}"),
             };
             return Some(token);
