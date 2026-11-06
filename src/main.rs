@@ -22,8 +22,8 @@ fn main() -> Result<(), Box<dyn Error>> {
     .expect("Failed to read args");
     let mut parse = Parser::from_string(contents);
     let mut ast = parse.parse()?;
-    resolve(&mut ast);
     expand::expand(&mut ast)?;
+    resolve(&mut ast);
     let mut interpreter = interpret::Interpreter::new(ast);
     let output = interpreter.interpret()?;
     let output = serde_json::to_string_pretty(&output).expect("Failed to parse to JSON");
