@@ -1,22 +1,14 @@
 
 
 # macros
-macro Rectangle($name) {
+macro Rectangle($name, $x, $y, $w, $h) {
     namespace $name {
-        Xpos = 1
-        Ypos = 1
-        Width = 1
-        Height = 1
+        Xpos = $x
+        Ypos = $y
+        Width = $w
+        Height = $h
         polygon((Xpos - (Width / 2), Ypos - (Height /2 )),(Xpos + (Width / 2), Ypos - (Height /2 )),(Xpos + (Width / 2), Ypos + (Height /2 )),(Xpos - (Width / 2), Ypos + (Height /2 )))
     }
 }
 
-Rectangle!(A)
-
-namespace A {
-    Xpos = 1
-        Ypos = 1
-        Width = 1
-        Height = 1
-        polygon((Xpos - (Width / 2), Ypos - (Height /2 )),(Xpos + (Width / 2), Ypos - (Height /2 )),(Xpos + (Width / 2), Ypos + (Height /2 )),(Xpos - (Width / 2), Ypos + (Height /2 )))
-}
+Rectangle!(A,1,1,1,1)

@@ -8,8 +8,8 @@ A programming language which compiles to desmos.
 - Functions
 - Namespaces
 - Proper scoping
+- Macros
 
 #### Future features
-- Macros
 - Style information
 - Full desmos parity...

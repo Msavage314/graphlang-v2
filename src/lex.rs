@@ -90,7 +90,7 @@ impl Lexer {
         let mut s = String::new();
         s.push(c);
 
-        while let Some(characters!()) = self.peek_char() {
+        while let Some('0'..='9') = self.peek_char() {
             s.push(self.read_char().unwrap());
         }
         if let Some('.') = self.peek_char() {

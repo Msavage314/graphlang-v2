@@ -4,7 +4,6 @@ use std::collections::HashMap;
 
 use crate::{
     errors::ExpandError,
-    lex::Token::Hash,
     parse::ast::{Expression, Program, Statement},
 };
 
@@ -39,14 +38,14 @@ fn expand_stmts(
     for s in stmts {
         match s {
             Statement::MacroCall { name, args } => {
-                println!("Finding macro {name}");
-                println!("macros are currently {macros:?}");
                 let (params, body) = macros.get(&name).ok_or(ExpandError::UnknownMacro)?;
                 if params.len() != args.len() {
                     return Err(ExpandError::WrongArgCount);
                 }
+
                 let bindings: HashMap<&str, &Expression> =
                     params.iter().map(|p| p.as_str()).zip(args.iter()).collect();
+
                 let body = body
                     .iter()
                     .map(|s| subst_stmt(s, &bindings))
