@@ -18,49 +18,36 @@
   "expressions": {
     "list": [
       {
-        "type": "text",
+        "type": "folder",
         "id": "1",
-        "text": " macros"
+        "title": "Square"
       },
       {
-        "type": "folder",
+        "type": "expression",
         "id": "2",
-        "title": "A"
+        "folderId": "1",
+        "color": "#3b8b2e",
+        "latex": "S_{quarexPos} = 0"
       },
       {
         "type": "expression",
         "id": "3",
-        "folderId": "2",
+        "folderId": "1",
         "color": "#3b8b2e",
-        "latex": "A_{Xpos} = 1"
+        "latex": "S_{quareyPos} = 0"
       },
       {
         "type": "expression",
         "id": "4",
-        "folderId": "2",
+        "folderId": "1",
         "color": "#3b8b2e",
-        "latex": "A_{Ypos} = 1"
+        "latex": "S_{quaresize} = 10"
       },
       {
         "type": "expression",
         "id": "5",
-        "folderId": "2",
         "color": "#3b8b2e",
-        "latex": "A_{Width} = 1"
-      },
-      {
-        "type": "expression",
-        "id": "6",
-        "folderId": "2",
-        "color": "#3b8b2e",
-        "latex": "A_{Height} = 1"
-      },
-      {
-        "type": "expression",
-        "id": "7",
-        "folderId": "2",
-        "color": "#3b8b2e",
-        "latex": "\\operatorname{polygon}\\left(\\left(A_{Xpos}-\\left( \\frac{A_{Width}}{2} \\right),A_{Ypos}-\\left( \\frac{A_{Height}}{2} \\right)\\right),\\left(A_{Xpos}+\\left( \\frac{A_{Width}}{2} \\right),A_{Ypos}-\\left( \\frac{A_{Height}}{2} \\right)\\right),\\left(A_{Xpos}+\\left( \\frac{A_{Width}}{2} \\right),A_{Ypos}+\\left( \\frac{A_{Height}}{2} \\right)\\right),\\left(A_{Xpos}-\\left( \\frac{A_{Width}}{2} \\right),A_{Ypos}+\\left( \\frac{A_{Height}}{2} \\right)\\right)\\right)"
+        "latex": "\\left(S_{quarexPos},S_{quareyPos}\\right)"
       }
     ]
   },
