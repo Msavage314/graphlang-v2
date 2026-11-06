@@ -29,6 +29,12 @@ pub enum Token {
     Pow,
     Bar,
 
+    Equals,
+    GreaterThan,
+    LessThan,
+    GreaterThanOrEqual,
+    LessThanOrEqual,
+
     LParen,
     RParen,
     LBracket,
@@ -154,7 +160,18 @@ impl Lexer {
                     }
                     Token::Comment(string)
                 }
-                '=' => Token::Assign,
+                '=' => match self.peek_char()? {
+                    '=' => Token::Equals,
+                    _ => Token::Assign,
+                },
+                '>' => match self.peek_char()? {
+                    '=' => Token::GreaterThanOrEqual,
+                    _ => Token::GreaterThan,
+                },
+                '<' => match self.peek_char()? {
+                    '=' => Token::LessThanOrEqual,
+                    _ => Token::LessThan,
+                },
                 '+' => Token::Plus,
                 '-' => Token::Minus,
                 '*' => Token::Mul,

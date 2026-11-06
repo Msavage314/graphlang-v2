@@ -178,3 +178,22 @@ impl ToLatex for BinaryOp {
         }
     }
 }
+#[derive(Debug, Clone)]
+pub enum CompareOp {
+    Equal,
+    GreaterThan,
+    LessThan,
+    GreaterThanOrEqual,
+    LessThanOrEqual,
+}
+impl ToLatex for CompareOp {
+    fn to_latex(&self) -> String {
+        match self {
+            CompareOp::Equal => "=".to_string(),
+            CompareOp::GreaterThan => ">".to_string(),
+            CompareOp::LessThan => "<".to_string(),
+            CompareOp::GreaterThanOrEqual => "\\ge".to_string(),
+            CompareOp::LessThanOrEqual => "\\le".to_string(),
+        }
+    }
+}

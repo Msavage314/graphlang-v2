@@ -4,7 +4,7 @@ use crate::{
     errors::{ParseError, ParserResult},
     lex::{
         Lexer,
-        Token::{self, Bang, MacroCall},
+        Token::{self},
         TokenKind,
     },
     parse::ast::{BinaryOp, Expression, Program, Statement},
