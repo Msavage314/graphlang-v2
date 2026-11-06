@@ -22,6 +22,15 @@ pub enum Statement {
         name: String,
         stmts: Vec<Statement>,
     },
+    MacroDef {
+        name: String,
+        params: Vec<String>,
+        body: Vec<Statement>,
+    },
+    MacroCall {
+        name: String,
+        args: Vec<Expression>,
+    },
 }
 impl ToLatex for Statement {
     fn to_latex(&self) -> String {
@@ -45,6 +54,10 @@ impl ToLatex for Statement {
             // TODO Potentially change this section somehow?
             Statement::Comment(_) => panic!("Comment doesn't support latex"),
             Statement::Namespace { name: _, stmts: _ } => panic!("Namespace doesn't support latex"),
+
+            // All macros should be expanded by the time we get here anyway
+            Statement::MacroDef { .. } => unreachable!(),
+            Statement::MacroCall { .. } => unreachable!(),
         }
     }
 }

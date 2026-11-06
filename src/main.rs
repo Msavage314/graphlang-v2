@@ -1,4 +1,8 @@
+//! # Overall pipeline
+//! lex -> parse to ast -> expand macros -> resolve namespaces -> interpret -> serialize
+
 pub mod errors;
+pub mod expand;
 pub mod interpret;
 pub mod lex;
 pub mod output;
@@ -18,6 +22,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     .expect("Failed to read args");
     let mut parse = Parser::from_string(contents);
     let mut ast = parse.parse()?;
+    expand::expand(&mut ast)?;
     resolve(&mut ast);
     let mut interpreter = interpret::Interpreter::new(ast);
     let output = interpreter.interpret()?;

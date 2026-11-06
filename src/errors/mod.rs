@@ -52,3 +52,23 @@ impl core::fmt::Display for InterpretError {
 impl core::error::Error for InterpretError {}
 
 pub type InterpretResult = Result<(), InterpretError>;
+
+#[derive(Debug)]
+pub enum ExpandError {
+    ExpansionError,
+    RecursionLimit,
+    UnknownMacro,
+    WrongArgCount,
+}
+impl core::fmt::Display for ExpandError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match *self {
+            ExpandError::ExpansionError => write!(f, "Expansion Error")?,
+            ExpandError::RecursionLimit => write!(f, "Reached macro expansion recursion limit")?,
+            ExpandError::UnknownMacro => write!(f, "Unknown macro")?,
+            ExpandError::WrongArgCount => write!(f, "Incorrect number of arguments to macro")?,
+        }
+        Ok(())
+    }
+}
+impl core::error::Error for ExpandError {}
