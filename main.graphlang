@@ -14,3 +14,7 @@ macro Rectangle($name, $x, $y, $w, $h) {
 Rectangle!(A,1,1,1,1)
 
 A.Xpos
+
+
+
+fn f(x) = if x > 0 { x } else {0}

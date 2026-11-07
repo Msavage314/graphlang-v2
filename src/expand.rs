@@ -4,7 +4,7 @@ use std::collections::HashMap;
 
 use crate::{
     errors::ExpandError,
-    parse::ast::{Expression, Program, Statement},
+    parse::ast::{Condition, Expression, Program, Statement},
 };
 
 /// Expands a program, replacing each macro_call statement with its ast
@@ -126,6 +126,19 @@ fn subst_expr(
             Box::new(subst_expr(x, bindings)?),
             Box::new(subst_expr(y, bindings)?),
         ),
+
+        Expression::If {
+            condition,
+            block,
+            else_block,
+        } => Expression::If {
+            condition: subst_condititon(condition, bindings)?,
+            block: Box::new(subst_expr(block, bindings)?),
+            else_block: match else_block {
+                None => None,
+                Some(expr) => Some(Box::new(subst_expr(expr, bindings)?)),
+            },
+        },
     })
 }
 fn subst_stmt(
@@ -158,5 +171,15 @@ fn subst_stmt(
                 .collect::<Result<_, _>>()?,
         },
         other => other.clone(),
+    })
+}
+fn subst_condititon(
+    c: &Condition,
+    bindings: &HashMap<&str, &Expression>,
+) -> Result<Condition, ExpandError> {
+    Ok(Condition {
+        left: Box::new(subst_expr(&c.left, bindings)?),
+        right: Box::new(subst_expr(&c.right, bindings)?),
+        op: c.op.clone(),
     })
 }
