@@ -108,7 +108,7 @@ fn subst_expr(
             right: Box::new(subst_expr(right, bindings)?),
         },
         Expression::Float(n) => Expression::Float(n.clone()),
-        Expression::Int(n) => Expression::Int(n.clone()),
+        Expression::Int(n) => Expression::Int(*n),
         Expression::Index { target, index } => Expression::Index {
             target: Box::new(subst_expr(target, bindings)?),
             index: index

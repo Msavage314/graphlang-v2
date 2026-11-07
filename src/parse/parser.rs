@@ -211,9 +211,9 @@ impl Parser {
                 };
 
                 Ok(Expression::If {
-                    condition: condition,
+                    condition,
                     block: Box::new(block),
-                    else_block: else_block,
+                    else_block,
                 })
             }
             token => Err(ParseError::ExpectedExpression {
