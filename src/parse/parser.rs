@@ -199,11 +199,11 @@ impl Parser {
             Token::If => {
                 let condition = self.parse_condition()?;
                 self.expect(TokenKind::LBrace)?;
-                let block = self.parse_primary()?;
+                let block = self.parse_expr_stmt()?;
                 self.expect(TokenKind::RBrace)?;
                 let else_block = if self.eat(TokenKind::Else) {
                     self.expect(TokenKind::LBrace)?;
-                    let temp = Some(Box::new(self.parse_primary()?));
+                    let temp = Some(Box::new(self.parse_expr_stmt()?));
                     self.expect(TokenKind::RBrace)?;
                     temp
                 } else {
