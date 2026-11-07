@@ -29,6 +29,12 @@ pub enum Token {
     Pow,
     Bar,
 
+    Equals,
+    GreaterThan,
+    LessThan,
+    GreaterThanOrEqual,
+    LessThanOrEqual,
+
     LParen,
     RParen,
     LBracket,
@@ -41,6 +47,8 @@ pub enum Token {
     Macro,
     /// Different to identifier, as contains !
     MacroCall(String),
+    If,
+    Else,
 
     Hash,
     Comma,
@@ -131,6 +139,8 @@ impl Lexer {
             "fn" => Token::Fn,
             "namespace" => Token::Namespace,
             "macro" => Token::Macro,
+            "if" => Token::If,
+            "else" => Token::Else,
             _ => Token::Identifier(s),
         }
     }
@@ -150,7 +160,18 @@ impl Lexer {
                     }
                     Token::Comment(string)
                 }
-                '=' => Token::Assign,
+                '=' => match self.peek_char()? {
+                    '=' => Token::Equals,
+                    _ => Token::Assign,
+                },
+                '>' => match self.peek_char()? {
+                    '=' => Token::GreaterThanOrEqual,
+                    _ => Token::GreaterThan,
+                },
+                '<' => match self.peek_char()? {
+                    '=' => Token::LessThanOrEqual,
+                    _ => Token::LessThan,
+                },
                 '+' => Token::Plus,
                 '-' => Token::Minus,
                 '*' => Token::Mul,

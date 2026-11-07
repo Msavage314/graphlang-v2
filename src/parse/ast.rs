@@ -87,6 +87,11 @@ pub enum Expression {
         target: Box<Expression>,
         index: Vec<Expression>,
     },
+    If {
+        condition: Condition,
+        block: Box<Expression>,
+        else_block: Option<Box<Expression>>,
+    },
 }
 
 impl ToLatex for Expression {
@@ -154,7 +159,36 @@ impl ToLatex for Expression {
                 format!("{}\\left[{index}\\right]", target.to_latex())
             }
             Expression::Float(i) => i.clone(),
+
+            Expression::If {
+                condition,
+                block,
+                else_block,
+            } => {
+                let condition = condition.to_latex();
+                let block = block.to_latex();
+                if let Some(else_block) = else_block {
+                    let else_block = else_block.to_latex();
+                    format!("\\left\\{{ {condition}: {block}, {else_block}\\right\\}}",)
+                } else {
+                    format!("\\left\\{{ {condition}: {block}\\right\\}}",)
+                }
+            }
         }
+    }
+}
+#[derive(Debug, Clone)]
+pub struct Condition {
+    pub left: Box<Expression>,
+    pub op: CompareOp,
+    pub right: Box<Expression>,
+}
+impl ToLatex for Condition {
+    fn to_latex(&self) -> String {
+        let left = self.left.to_latex();
+        let right = self.right.to_latex();
+        let op = self.op.to_latex();
+        return format!("{left}{op}{right}");
     }
 }
 
@@ -175,6 +209,25 @@ impl ToLatex for BinaryOp {
             BinaryOp::Multiply => "\\cdot ".to_string(),
             BinaryOp::Divide => "/".to_string(),
             BinaryOp::Pow => "^".to_string(),
+        }
+    }
+}
+#[derive(Debug, Clone)]
+pub enum CompareOp {
+    Equal,
+    GreaterThan,
+    LessThan,
+    GreaterThanOrEqual,
+    LessThanOrEqual,
+}
+impl ToLatex for CompareOp {
+    fn to_latex(&self) -> String {
+        match self {
+            CompareOp::Equal => "=".to_string(),
+            CompareOp::GreaterThan => ">".to_string(),
+            CompareOp::LessThan => "<".to_string(),
+            CompareOp::GreaterThanOrEqual => "\\ge".to_string(),
+            CompareOp::LessThanOrEqual => "\\le".to_string(),
         }
     }
 }

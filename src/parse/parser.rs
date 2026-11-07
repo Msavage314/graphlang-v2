@@ -4,10 +4,10 @@ use crate::{
     errors::{ParseError, ParserResult},
     lex::{
         Lexer,
-        Token::{self, Bang, MacroCall},
+        Token::{self},
         TokenKind,
     },
-    parse::ast::{BinaryOp, Expression, Program, Statement},
+    parse::ast::{BinaryOp, CompareOp, Condition, Expression, Program, Statement},
 };
 
 pub struct Parser {
@@ -196,6 +196,26 @@ impl Parser {
                 Ok(Expression::List(items))
             }
             Token::Eof => Err(ParseError::UnexpectedEof),
+            Token::If => {
+                let condition = self.parse_condition()?;
+                self.expect(TokenKind::LBrace)?;
+                let block = self.parse_expr_stmt()?;
+                self.expect(TokenKind::RBrace)?;
+                let else_block = if self.eat(TokenKind::Else) {
+                    self.expect(TokenKind::LBrace)?;
+                    let temp = Some(Box::new(self.parse_expr_stmt()?));
+                    self.expect(TokenKind::RBrace)?;
+                    temp
+                } else {
+                    None
+                };
+
+                Ok(Expression::If {
+                    condition: condition,
+                    block: Box::new(block),
+                    else_block: else_block,
+                })
+            }
             token => Err(ParseError::ExpectedExpression {
                 found: token.kind(),
             }),
@@ -289,6 +309,29 @@ impl Parser {
             name,
             params,
             body: stmts,
+        })
+    }
+    fn parse_condition(&mut self) -> ParserResult<Condition> {
+        let left = self.parse_expr_stmt()?;
+        let op = match self.peek().kind() {
+            TokenKind::Equals => CompareOp::Equal,
+            TokenKind::GreaterThan => CompareOp::GreaterThan,
+            TokenKind::GreaterThanOrEqual => CompareOp::GreaterThanOrEqual,
+            TokenKind::LessThan => CompareOp::LessThan,
+            TokenKind::LessThanOrEqual => CompareOp::LessThanOrEqual,
+            kind => {
+                return Err(ParseError::UnexpectedToken {
+                    expected: TokenKind::Equals,
+                    found: kind,
+                });
+            }
+        };
+        self.advance();
+        let right = self.parse_expr_stmt()?;
+        Ok(Condition {
+            left: Box::new(left),
+            op,
+            right: Box::new(right),
         })
     }
 }

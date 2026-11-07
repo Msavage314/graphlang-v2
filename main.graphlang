@@ -7,6 +7,7 @@ macro Rectangle($name, $x, $y, $w, $h) {
         Ypos = $y
         Width = $w
         Height = $h
+        
         polygon((Xpos - (Width / 2), Ypos - (Height / 2)),(Xpos + (Width / 2), Ypos - (Height /2 )),(Xpos + (Width / 2), Ypos + (Height /2 )),(Xpos - (Width / 2), Ypos + (Height /2 )))
     }
 }
@@ -14,3 +15,7 @@ macro Rectangle($name, $x, $y, $w, $h) {
 Rectangle!(A,1,1,1,1)
 
 A.Xpos
+
+
+
+fn f(x) = if x < 0 { x } else { if x < 1 {2} else {0}}

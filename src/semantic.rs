@@ -1,7 +1,7 @@
 //! AST transformer which verifies scoping
 use crate::{
     output::latex::BUILTINS,
-    parse::ast::{Expression, Program, Statement},
+    parse::ast::{Condition, Expression, Program, Statement},
 };
 use std::collections::HashSet;
 
@@ -94,5 +94,26 @@ fn resolve_expr(
             resolve_expr(x, namespace, defined, locals);
             resolve_expr(y, namespace, defined, locals);
         }
+
+        Expression::If {
+            condition,
+            block,
+            else_block,
+        } => {
+            resolve_expr(block, namespace, defined, locals);
+            if let Some(block) = else_block {
+                resolve_expr(block, namespace, defined, locals);
+            }
+            resolve_condition(condition, namespace, defined, locals);
+        }
     }
+}
+fn resolve_condition(
+    c: &mut Condition,
+    namespace: &str,
+    defined: &HashSet<String>,
+    locals: &HashSet<String>,
+) {
+    resolve_expr(&mut c.left, namespace, defined, locals);
+    resolve_expr(&mut c.right, namespace, defined, locals);
 }
