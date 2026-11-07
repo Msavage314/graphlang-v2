@@ -17,4 +17,4 @@ A.Xpos
 
 
 
-fn f(x) = if x > 0 { x } else {0}
+fn f(x) = if x < 0 { x } else { if x < 1 {2} else {0}}
