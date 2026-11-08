@@ -355,6 +355,12 @@ impl Parser {
                 self.expect(TokenKind::RParen)?;
                 Ok(StyleInfo::Color(expr))
             }
+            "lineStyle" => {
+                self.expect(TokenKind::LParen)?;
+                let expr = self.parse_expr_stmt()?;
+                self.expect(TokenKind::RParen)?;
+                Ok(StyleInfo::LineStyle(expr))
+            }
             _ => Err(ParseError::IncorrectStyleInfo),
         }
     }

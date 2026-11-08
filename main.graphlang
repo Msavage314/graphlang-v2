@@ -13,4 +13,7 @@ macro Rectangle($name, $x, $y, $w, $h){
 }
 
 Rectangle!(A,1,1,1,1)
-fn a(x) = a
+
+@color("ABCDEF")
+@lineStyle("DASHED")
+fn a(x) = x

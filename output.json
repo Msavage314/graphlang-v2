@@ -72,8 +72,9 @@
       {
         "type": "expression",
         "id": "9",
-        "color": "#3b8b2e",
-        "latex": "a\\left(x\\right)=a"
+        "color": "#ABCDEF",
+        "lineStyle": "DASHED",
+        "latex": "a\\left(x\\right)=x"
       }
     ]
   },

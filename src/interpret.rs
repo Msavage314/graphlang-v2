@@ -57,6 +57,12 @@ impl Interpreter {
                         .last_mut()
                         .unwrap()
                         .apply_annotation("color", color_from(c)?.as_str())?,
+                    StyleInfo::LineStyle(l) => output
+                        .expressions
+                        .list
+                        .last_mut()
+                        .unwrap()
+                        .apply_annotation("lineStyle", line_style_from(l)?.as_str())?,
                 };
                 Ok(())
             }
@@ -83,6 +89,12 @@ fn color_from(expr: &Expression) -> Result<String, InterpretError> {
         return Err(InterpretError::InvalidSyntax);
     }
     Ok(format!("#{hex}"))
+}
+fn line_style_from(expr: &Expression) -> Result<String, InterpretError> {
+    let Expression::Str(s) = expr else {
+        return Err(InterpretError::InvalidSyntax); // e.g. an unresolved $c or a number
+    };
+    Ok(s.to_string())
 }
 /*
 {
