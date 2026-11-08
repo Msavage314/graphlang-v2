@@ -69,9 +69,9 @@ impl ToLatex for Statement {
 
 impl Statement {
     /// Returns a reference to the inner of this [`Statement`].
-    fn _inner(&self) -> &Statement {
+    pub fn inner(&self) -> &Statement {
         match self {
-            Statement::Annotated { stmt: body, .. } => body._inner(),
+            Statement::Annotated { stmt: body, .. } => body.inner(),
             s => s,
         }
     }

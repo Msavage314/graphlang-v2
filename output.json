@@ -18,87 +18,13 @@
   "expressions": {
     "list": [
       {
-        "type": "text",
+        "type": "expression",
         "id": "1",
-        "text": " UI library in desmos",
-        "label": null
-      },
-      {
-        "type": "text",
-        "id": "2",
-        "text": " macros",
-        "label": null
-      },
-      {
-        "type": "folder",
-        "id": "3",
-        "title": "A",
-        "label": null
-      },
-      {
-        "type": "expression",
-        "id": "4",
-        "folderId": "3",
-        "color": "#3b8b2e",
-        "latex": "A_{Xpos} = 1",
-        "label": null
-      },
-      {
-        "type": "expression",
-        "id": "5",
-        "folderId": "3",
-        "color": "#3b8b2e",
-        "latex": "A_{Ypos} = 1",
-        "label": null
-      },
-      {
-        "type": "expression",
-        "id": "6",
-        "folderId": "3",
-        "color": "#3b8b2e",
-        "latex": "A_{Width} = 1",
-        "label": null
-      },
-      {
-        "type": "expression",
-        "id": "7",
-        "folderId": "3",
-        "color": "#3b8b2e",
-        "latex": "A_{Height} = 1",
-        "label": null
-      },
-      {
-        "type": "expression",
-        "id": "8",
-        "folderId": "3",
-        "color": "#3b8b2e",
-        "latex": "\\operatorname{polygon}\\left(\\left(A_{Xpos}-\\left( \\frac{A_{Width}}{2} \\right),A_{Ypos}-\\left( \\frac{A_{Height}}{2} \\right)\\right),\\left(A_{Xpos}+\\left( \\frac{A_{Width}}{2} \\right),A_{Ypos}-\\left( \\frac{A_{Height}}{2} \\right)\\right),\\left(A_{Xpos}+\\left( \\frac{A_{Width}}{2} \\right),A_{Ypos}+\\left( \\frac{A_{Height}}{2} \\right)\\right),\\left(A_{Xpos}-\\left( \\frac{A_{Width}}{2} \\right),A_{Ypos}+\\left( \\frac{A_{Height}}{2} \\right)\\right)\\right)",
-        "label": null
-      },
-      {
-        "type": "expression",
-        "id": "9",
-        "folderId": "3",
-        "color": "#3b8b2e",
-        "latex": "A_{Centre} = \\left(A_{Xpos},A_{Ypos}\\right)",
-        "label": null
-      },
-      {
-        "type": "expression",
-        "id": "10",
         "color": "#ABCDEF",
-        "lineStyle": "DASHED",
-        "latex": "a\\left(x\\right)=x",
-        "label": null
-      },
-      {
-        "type": "expression",
-        "id": "11",
-        "color": "#3b8b2e",
         "latex": "p = \\left(0,0\\right)",
         "hidden": true,
         "showLabel": true,
-        "label": "Hello"
+        "label": "hello"
       }
     ]
   },

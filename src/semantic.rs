@@ -10,7 +10,7 @@ fn is_builtin(name: &str) -> bool {
 }
 pub fn resolve(program: &mut Program) {
     for stmt in program.statements.iter_mut() {
-        if let Statement::Namespace { name, stmts } = stmt {
+        if let Statement::Namespace { name, stmts } = stmt.inner_mut() {
             resolve_namespace(name, stmts);
         }
     }
@@ -19,7 +19,7 @@ fn resolve_namespace(ns: &str, stmts: &mut [Statement]) {
     // Pass 1: names defined directly in this namespace
     let mut defined = HashSet::new();
     for s in stmts.iter() {
-        match s {
+        match s.inner() {
             Statement::Assignment { name, .. } | Statement::FunctionDef { name, .. }
                 if !is_builtin(name) =>
             {

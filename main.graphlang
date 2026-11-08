@@ -1,10 +1,9 @@
 macro Text($text, $xpos, $ypos) {
     @hidden
-    @label("Hello")
+    @label($text)
     p = ($xpos,$ypos)
-
 }
 
 
 @color("ABCDEF")
-Text!("adsaudasdasd",1,1)
+Text!("hello",0,0)

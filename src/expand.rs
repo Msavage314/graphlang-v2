@@ -57,6 +57,17 @@ fn expand_stmts(
                 name,
                 stmts: expand_stmts(stmts, macros, depth)?,
             }),
+            Statement::Annotated { style, stmt } => {
+                let mut expanded = expand_stmts(vec![*stmt], macros, depth)?.into_iter();
+                if let Some(first) = expanded.next() {
+                    out.push(Statement::Annotated {
+                        style,
+                        stmt: Box::new(first),
+                    });
+                }
+                out.extend(expanded);
+            }
+
             other => out.push(other),
         }
     }
