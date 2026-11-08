@@ -195,5 +195,8 @@ fn subst_style(
 ) -> Result<StyleInfo, ExpandError> {
     Ok(match style {
         StyleInfo::Color(e) => StyleInfo::Color(subst_expr(e, bindings)?),
+        StyleInfo::LineStyle(l) => StyleInfo::LineStyle(subst_expr(l, bindings)?),
+        StyleInfo::Hidden => StyleInfo::Hidden,
+        StyleInfo::Label(l) => StyleInfo::Label(subst_expr(l, bindings)?),
     })
 }

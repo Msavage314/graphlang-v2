@@ -324,10 +324,7 @@ impl Parser {
             TokenKind::LessThan => CompareOp::LessThan,
             TokenKind::LessThanOrEqual => CompareOp::LessThanOrEqual,
             kind => {
-                return Err(ParseError::UnexpectedToken {
-                    expected: TokenKind::Equals,
-                    found: kind,
-                });
+                return Err(ParseError::ExpectedComparisonOperator { found: kind });
             }
         };
         self.advance();
@@ -357,6 +354,19 @@ impl Parser {
                 let expr = self.parse_expr_stmt()?;
                 self.expect(TokenKind::RParen)?;
                 Ok(StyleInfo::Color(expr))
+            }
+            "lineStyle" => {
+                self.expect(TokenKind::LParen)?;
+                let expr = self.parse_expr_stmt()?;
+                self.expect(TokenKind::RParen)?;
+                Ok(StyleInfo::LineStyle(expr))
+            }
+            "hidden" => Ok(StyleInfo::Hidden),
+            "label" => {
+                self.expect(TokenKind::LParen)?;
+                let expr = self.parse_expr_stmt()?;
+                self.expect(TokenKind::RParen)?;
+                Ok(StyleInfo::Label(expr))
             }
             _ => Err(ParseError::IncorrectStyleInfo),
         }

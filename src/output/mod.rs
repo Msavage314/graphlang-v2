@@ -1,8 +1,8 @@
 pub mod latex;
 
 use core::default;
-
 use serde::Serialize;
+use std::ops::Not;
 
 use crate::errors::InterpretError;
 
@@ -31,6 +31,7 @@ impl GraphOutput {
         &mut self,
         expr_type: &str,
         color: Option<String>,
+        line_style: Option<String>,
         text: Option<String>,
         title: Option<String>,
         in_folder: bool,
@@ -40,6 +41,7 @@ impl GraphOutput {
             expr_type: expr_type.into(),
             id: id.clone(),
             color,
+            line_style,
             latex: String::new(),
             text,
             title,
@@ -48,20 +50,26 @@ impl GraphOutput {
             } else {
                 None
             },
+            hidden: false,
+            show_label: false,
+            label: None,
         });
         id
     }
     pub fn add_line(&mut self) {
-        self.push("expression", Some("#3b8b2e".into()), None, None, true);
+        self.push("expression", Some("#3b8b2e".into()), None, None, None, true);
     }
 
     pub fn add_note(&mut self, text: impl ToString) {
-        self.push("text", None, Some(text.to_string()), None, true);
+        self.push("text", None, None, Some(text.to_string()), None, true);
     }
 
     /// Returns the folder's id
     pub fn add_folder(&mut self, title: impl ToString) -> String {
-        self.push("folder", None, None, Some(title.to_string()), false)
+        self.push("folder", None, None, None, Some(title.to_string()), false)
+    }
+    pub fn last(&mut self) -> &mut Expression {
+        self.expressions.list.last_mut().unwrap()
     }
 }
 impl default::Default for GraphOutput {
@@ -154,6 +162,10 @@ pub struct Expression {
     #[serde(skip_serializing_if = "Option::is_none")]
     color: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(rename = "lineStyle")]
+    line_style: Option<String>,
+
     #[serde(skip_serializing_if = "String::is_empty")]
     latex: String,
 
@@ -162,6 +174,15 @@ pub struct Expression {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     title: Option<String>,
+
+    #[serde(skip_serializing_if = "<&bool>::not")]
+    hidden: bool,
+
+    #[serde(rename = "showLabel")]
+    #[serde(skip_serializing_if = "<&bool>::not")]
+    show_label: bool,
+
+    label: Option<String>,
 }
 
 impl Expression {
@@ -177,9 +198,17 @@ impl Expression {
     pub fn apply_annotation(&mut self, name: &str, arg: &str) -> Result<(), InterpretError> {
         match name {
             "color" => self.color = Some(arg.to_string()),
+            "lineStyle" => self.line_style = Some(arg.to_string()),
+            "label" => self.label = Some(arg.to_string()),
             _ => return Err(InterpretError::InvalidSyntax),
         }
         Ok(())
+    }
+    pub fn hide(&mut self) {
+        self.hidden = true;
+    }
+    pub fn show_label(&mut self) {
+        self.show_label = true;
     }
 }
 

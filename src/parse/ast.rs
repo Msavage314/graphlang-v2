@@ -259,4 +259,7 @@ impl ToLatex for CompareOp {
 #[derive(Debug, Clone)]
 pub enum StyleInfo {
     Color(Expression),
+    LineStyle(Expression),
+    Hidden,
+    Label(Expression),
 }

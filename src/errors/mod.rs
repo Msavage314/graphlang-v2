@@ -12,6 +12,9 @@ pub enum ParseError {
     },
     InvalidAssignmentTarget,
     IncorrectStyleInfo,
+    ExpectedComparisonOperator {
+        found: TokenKind,
+    },
 }
 
 impl core::fmt::Display for ParseError {
@@ -29,6 +32,10 @@ impl core::fmt::Display for ParseError {
                 write!(f, "Parser error - InvalidAssignmentTarget")?
             }
             ParseError::IncorrectStyleInfo => write!(f, "Parser error - IncorrectStyleInfo")?,
+            ParseError::ExpectedComparisonOperator { found } => write!(
+                f,
+                "Parser error - Expected a comparison operator, found {found:?}"
+            )?,
         };
         Ok(())
     }

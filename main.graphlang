@@ -1,16 +1,10 @@
+macro Text($text, $xpos, $ypos) {
+    @hidden
+    @label("Hello")
+    p = ($xpos,$ypos)
 
-
-# macros
-macro Rectangle($name, $x, $y, $w, $h){
-    namespace $name {
-        Xpos = $x
-        Ypos = $y
-        Width = $w
-        Height = $h
-        polygon((Xpos - (Width / 2), Ypos - (Height / 2)),(Xpos + (Width / 2), Ypos - (Height /2 )),(Xpos + (Width / 2), Ypos + (Height /2 )),(Xpos - (Width / 2), Ypos + (Height /2 )))
-        Centre = (Xpos,Ypos)
-    }
 }
 
-Rectangle!(A,1,1,1,1)
-fn a(x) = a
+
+@color("ABCDEF")
+Text!("adsaudasdasd",1,1)
