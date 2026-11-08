@@ -29,7 +29,7 @@ fn resolve_namespace(ns: &str, stmts: &mut [Statement]) {
         }
     }
     for s in stmts.iter_mut() {
-        match s {
+        match s.inner_mut() {
             Statement::Assignment { name, value } => {
                 resolve_expr(value, ns, &defined, &HashSet::new());
                 if !is_builtin(name) {

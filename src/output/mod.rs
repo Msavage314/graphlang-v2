@@ -4,6 +4,8 @@ use core::default;
 
 use serde::Serialize;
 
+use crate::errors::InterpretError;
+
 #[derive(Clone, Debug, Serialize)]
 pub struct GraphOutput {
     version: usize,
@@ -171,6 +173,13 @@ impl Expression {
             return;
         };
         t.push_str(&text.to_string());
+    }
+    pub fn apply_annotation(&mut self, name: &str, arg: &str) -> Result<(), InterpretError> {
+        match name {
+            "color" => self.color = Some(arg.to_string()),
+            _ => return Err(InterpretError::InvalidSyntax),
+        }
+        Ok(())
     }
 }
 

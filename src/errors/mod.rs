@@ -11,6 +11,7 @@ pub enum ParseError {
         found: TokenKind,
     },
     InvalidAssignmentTarget,
+    IncorrectStyleInfo,
 }
 
 impl core::fmt::Display for ParseError {
@@ -27,6 +28,7 @@ impl core::fmt::Display for ParseError {
             ParseError::InvalidAssignmentTarget => {
                 write!(f, "Parser error - InvalidAssignmentTarget")?
             }
+            ParseError::IncorrectStyleInfo => write!(f, "Parser error - IncorrectStyleInfo")?,
         };
         Ok(())
     }

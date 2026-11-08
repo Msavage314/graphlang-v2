@@ -170,6 +170,11 @@ fn subst_stmt(
                 .map(|a| subst_expr(a, bindings))
                 .collect::<Result<_, _>>()?,
         },
+        Statement::Annotated { style, stmt: body } => Statement::Annotated {
+            style: style.clone(),
+            stmt: Box::new(subst_stmt(body, bindings)?),
+        },
+
         other => other.clone(),
     })
 }

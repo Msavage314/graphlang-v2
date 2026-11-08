@@ -1,7 +1,7 @@
 use crate::{
     errors::{InterpretError, InterpretResult},
     output::{GraphOutput, latex::ToLatex},
-    parse::ast::{Program, Statement},
+    parse::ast::{Program, Statement, StyleInfo},
 };
 
 pub struct Interpreter {
@@ -42,6 +42,19 @@ impl Interpreter {
                     Self::interpret_statement(output, s)?;
                 }
                 output.current_folder = None;
+                Ok(())
+            }
+            Statement::Annotated { style, stmt } => {
+                Self::interpret_statement(output, stmt)?;
+
+                match style {
+                    StyleInfo::color(c) => output
+                        .expressions
+                        .list
+                        .last_mut()
+                        .unwrap()
+                        .apply_annotation("color", c.as_str())?,
+                };
                 Ok(())
             }
             _ => {

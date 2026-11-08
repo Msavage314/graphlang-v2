@@ -31,6 +31,10 @@ pub enum Statement {
         name: String,
         args: Vec<Expression>,
     },
+    Annotated {
+        style: StyleInfo,
+        stmt: Box<Statement>,
+    },
 }
 impl ToLatex for Statement {
     fn to_latex(&self) -> String {
@@ -51,17 +55,30 @@ impl ToLatex for Statement {
             Statement::Assignment { name, value: body } => {
                 format!("{} = {}", ident_to_latex(name), body.to_latex())
             }
+            Statement::Annotated { stmt: body, .. } => body.to_latex(),
             // TODO Potentially change this section somehow?
             Statement::Comment(_) => panic!("Comment doesn't support latex"),
             Statement::Namespace { name: _, stmts: _ } => panic!("Namespace doesn't support latex"),
-
             // All macros should be expanded by the time we get here anyway
             Statement::MacroDef { .. } => unreachable!(),
             Statement::MacroCall { .. } => unreachable!(),
         }
     }
 }
-
+impl Statement {
+    fn inner(&self) -> &Statement {
+        match self {
+            Statement::Annotated { stmt: body, .. } => body.inner(),
+            s => s,
+        }
+    }
+    pub fn inner_mut(&mut self) -> &mut Statement {
+        match self {
+            Statement::Annotated { stmt, .. } => stmt.inner_mut(),
+            s => s,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 pub enum Expression {
     Parentheses(Box<Expression>),
@@ -230,4 +247,8 @@ impl ToLatex for CompareOp {
             CompareOp::LessThanOrEqual => "\\le".to_string(),
         }
     }
+}
+#[derive(Debug, Clone)]
+pub enum StyleInfo {
+    color(String),
 }

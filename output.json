@@ -65,14 +65,9 @@
       {
         "type": "expression",
         "id": "8",
+        "folderId": "2",
         "color": "#3b8b2e",
-        "latex": "A_{Xpos}"
-      },
-      {
-        "type": "expression",
-        "id": "9",
-        "color": "#3b8b2e",
-        "latex": "f\\left(x\\right)=\\left\\{ x<0: x, \\left\\{ x<1: 2, 0\\right\\}\\right\\}"
+        "latex": "A_{Centre} = \\left(A_{Xpos},A_{Ypos}\\right)"
       }
     ]
   },

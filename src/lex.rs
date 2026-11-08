@@ -58,6 +58,7 @@ pub enum Token {
     Comment(String),
 
     Eof,
+    At,
 }
 
 impl Token {
@@ -187,6 +188,7 @@ impl Lexer {
                 '}' => Token::RBrace,
                 '.' => Token::Dot,
                 '!' => Token::Bang,
+                '@' => Token::At,
                 _ => panic!("Unknown char {c}"),
             };
             return Some(token);

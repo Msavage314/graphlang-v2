@@ -7,7 +7,7 @@ use crate::{
         Token::{self},
         TokenKind,
     },
-    parse::ast::{BinaryOp, CompareOp, Condition, Expression, Program, Statement},
+    parse::ast::{BinaryOp, CompareOp, Condition, Expression, Program, Statement, StyleInfo},
 };
 
 pub struct Parser {
@@ -81,6 +81,9 @@ impl Parser {
         }
         if self.peek().kind() == TokenKind::Macro {
             return self.parse_macro_def();
+        }
+        if self.peek().kind() == TokenKind::At {
+            return self.parse_annotated();
         }
         if let Token::MacroCall(_) = self.peek() {
             let Token::MacroCall(name) = self.advance() else {
@@ -333,5 +336,28 @@ impl Parser {
             op,
             right: Box::new(right),
         })
+    }
+
+    fn parse_annotated(&mut self) -> ParserResult<Statement> {
+        let style = self.parse_style()?;
+        let stmt = self.parse_stmt()?;
+        Ok(Statement::Annotated {
+            style: style,
+            stmt: Box::new(stmt),
+        })
+    }
+    fn parse_style(&mut self) -> ParserResult<StyleInfo> {
+        self.expect(TokenKind::At)?;
+        let name = self.expect_identifier()?;
+
+        match name.as_str() {
+            "color" => {
+                self.expect(TokenKind::LParen)?;
+                let value = self.expect_identifier()?;
+                self.expect(TokenKind::RParen)?;
+                Ok(StyleInfo::color(format!("#{value}")))
+            }
+            _ => Err(ParseError::IncorrectStyleInfo),
+        }
     }
 }
