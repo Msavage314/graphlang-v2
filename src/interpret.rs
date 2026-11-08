@@ -52,10 +52,7 @@ impl Interpreter {
 
                 match style {
                     StyleInfo::Color(c) => output
-                        .expressions
-                        .list
-                        .last_mut()
-                        .unwrap()
+                        .last()
                         .apply_annotation("color", color_from(c)?.as_str())?,
                     StyleInfo::LineStyle(l) => output
                         .expressions
@@ -63,6 +60,13 @@ impl Interpreter {
                         .last_mut()
                         .unwrap()
                         .apply_annotation("lineStyle", line_style_from(l)?.as_str())?,
+                    StyleInfo::Hidden => output.last().hide(),
+                    StyleInfo::Label(l) => {
+                        output
+                            .last()
+                            .apply_annotation("label", label(l)?.as_str())?;
+                        output.last().show_label();
+                    }
                 };
                 Ok(())
             }
@@ -96,6 +100,13 @@ fn line_style_from(expr: &Expression) -> Result<String, InterpretError> {
     };
     Ok(s.to_string())
 }
+fn label(expr: &Expression) -> Result<String, InterpretError> {
+    let Expression::Str(s) = expr else {
+        return Err(InterpretError::InvalidSyntax); // e.g. an unresolved $c or a number
+    };
+    Ok(s.to_string())
+}
+
 /*
 {
   "version": 11,

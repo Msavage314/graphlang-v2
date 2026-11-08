@@ -260,4 +260,6 @@ impl ToLatex for CompareOp {
 pub enum StyleInfo {
     Color(Expression),
     LineStyle(Expression),
+    Hidden,
+    Label(Expression),
 }

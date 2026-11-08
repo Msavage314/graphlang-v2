@@ -1,8 +1,8 @@
 pub mod latex;
 
 use core::default;
-
 use serde::Serialize;
+use std::ops::Not;
 
 use crate::errors::InterpretError;
 
@@ -50,6 +50,9 @@ impl GraphOutput {
             } else {
                 None
             },
+            hidden: false,
+            show_label: false,
+            label: None,
         });
         id
     }
@@ -64,6 +67,9 @@ impl GraphOutput {
     /// Returns the folder's id
     pub fn add_folder(&mut self, title: impl ToString) -> String {
         self.push("folder", None, None, None, Some(title.to_string()), false)
+    }
+    pub fn last(&mut self) -> &mut Expression {
+        self.expressions.list.last_mut().unwrap()
     }
 }
 impl default::Default for GraphOutput {
@@ -168,6 +174,15 @@ pub struct Expression {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     title: Option<String>,
+
+    #[serde(skip_serializing_if = "<&bool>::not")]
+    hidden: bool,
+
+    #[serde(rename = "showLabel")]
+    #[serde(skip_serializing_if = "<&bool>::not")]
+    show_label: bool,
+
+    label: Option<String>,
 }
 
 impl Expression {
@@ -184,9 +199,16 @@ impl Expression {
         match name {
             "color" => self.color = Some(arg.to_string()),
             "lineStyle" => self.line_style = Some(arg.to_string()),
+            "label" => self.label = Some(arg.to_string()),
             _ => return Err(InterpretError::InvalidSyntax),
         }
         Ok(())
+    }
+    pub fn hide(&mut self) {
+        self.hidden = true;
+    }
+    pub fn show_label(&mut self) {
+        self.show_label = true;
     }
 }
 

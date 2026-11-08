@@ -361,6 +361,13 @@ impl Parser {
                 self.expect(TokenKind::RParen)?;
                 Ok(StyleInfo::LineStyle(expr))
             }
+            "hidden" => Ok(StyleInfo::Hidden),
+            "label" => {
+                self.expect(TokenKind::LParen)?;
+                let expr = self.parse_expr_stmt()?;
+                self.expect(TokenKind::RParen)?;
+                Ok(StyleInfo::Label(expr))
+            }
             _ => Err(ParseError::IncorrectStyleInfo),
         }
     }
