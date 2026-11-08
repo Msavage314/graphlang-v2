@@ -1,7 +1,7 @@
 use crate::{
     errors::{InterpretError, InterpretResult},
     output::{GraphOutput, latex::ToLatex},
-    parse::ast::{Program, Statement, StyleInfo},
+    parse::ast::{Expression, Program, Statement, StyleInfo},
 };
 
 pub struct Interpreter {
@@ -15,10 +15,12 @@ impl Interpreter {
             output: GraphOutput::default(),
         }
     }
+
     pub fn interpret(&mut self) -> Result<GraphOutput, InterpretError> {
         Self::interpret_program(&mut self.output, &self.ast)?;
         Ok(self.output.clone())
     }
+
     fn interpret_program(output: &mut GraphOutput, program: &Program) -> InterpretResult {
         for statement in &program.statements {
             Self::interpret_statement(output, statement)?
@@ -26,6 +28,7 @@ impl Interpreter {
 
         Ok(())
     }
+
     fn interpret_statement(output: &mut GraphOutput, stmt: &Statement) -> InterpretResult {
         match stmt {
             Statement::Comment(c) => {
@@ -48,12 +51,12 @@ impl Interpreter {
                 Self::interpret_statement(output, stmt)?;
 
                 match style {
-                    StyleInfo::color(c) => output
+                    StyleInfo::Color(c) => output
                         .expressions
                         .list
                         .last_mut()
                         .unwrap()
-                        .apply_annotation("color", c.as_str())?,
+                        .apply_annotation("color", color_from(c)?.as_str())?,
                 };
                 Ok(())
             }
@@ -71,6 +74,16 @@ impl Interpreter {
     }
 }
 
+fn color_from(expr: &Expression) -> Result<String, InterpretError> {
+    let Expression::Str(s) = expr else {
+        return Err(InterpretError::InvalidSyntax); // e.g. an unresolved $c or a number
+    };
+    let hex = s.trim_start_matches('#');
+    if !hex.chars().all(|c| c.is_ascii_hexdigit()) || !matches!(hex.len(), 3 | 6) {
+        return Err(InterpretError::InvalidSyntax);
+    }
+    Ok(format!("#{hex}"))
+}
 /*
 {
   "version": 11,

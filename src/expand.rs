@@ -4,7 +4,7 @@ use std::collections::HashMap;
 
 use crate::{
     errors::ExpandError,
-    parse::ast::{Condition, Expression, Program, Statement},
+    parse::ast::{Condition, Expression, Program, Statement, StyleInfo},
 };
 
 /// Expands a program, replacing each macro_call statement with its ast
@@ -139,6 +139,7 @@ fn subst_expr(
                 Some(expr) => Some(Box::new(subst_expr(expr, bindings)?)),
             },
         },
+        Expression::Str(s) => Expression::Str(s.clone()),
     })
 }
 fn subst_stmt(
@@ -171,7 +172,7 @@ fn subst_stmt(
                 .collect::<Result<_, _>>()?,
         },
         Statement::Annotated { style, stmt: body } => Statement::Annotated {
-            style: style.clone(),
+            style: subst_style(style, bindings)?,
             stmt: Box::new(subst_stmt(body, bindings)?),
         },
 
@@ -186,5 +187,13 @@ fn subst_condititon(
         left: Box::new(subst_expr(&c.left, bindings)?),
         right: Box::new(subst_expr(&c.right, bindings)?),
         op: c.op.clone(),
+    })
+}
+fn subst_style(
+    style: &StyleInfo,
+    bindings: &HashMap<&str, &Expression>,
+) -> Result<StyleInfo, ExpandError> {
+    Ok(match style {
+        StyleInfo::Color(e) => StyleInfo::Color(subst_expr(e, bindings)?),
     })
 }

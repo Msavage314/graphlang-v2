@@ -59,6 +59,7 @@ pub enum Token {
 
     Eof,
     At,
+    Str(String),
 }
 
 impl Token {
@@ -104,12 +105,12 @@ impl Lexer {
         }
         if let Some('.') = self.peek_char() {
             self.read_char();
-            return self.parse_fraction(s);
+            return self.lex_decimal(s);
         }
 
         Token::Int(s.parse::<isize>().expect("Failed to parse integer"))
     }
-    fn parse_fraction(&mut self, mut s: String) -> Token {
+    fn lex_decimal(&mut self, mut s: String) -> Token {
         if s.is_empty() {
             s.push('0');
         }
@@ -124,7 +125,7 @@ impl Lexer {
         }
         Token::Float(s)
     }
-    fn parse_identifier(&mut self, c: char) -> Token {
+    fn lex_identifier(&mut self, c: char) -> Token {
         let mut s = String::new();
         s.push(c);
 
@@ -145,22 +146,34 @@ impl Lexer {
             _ => Token::Identifier(s),
         }
     }
+    fn lex_comment(&mut self) -> Token {
+        let mut string = String::new();
+        while let Some(c) = self.peek_char() {
+            if *c == '\n' {
+                break;
+            }
+            string.push(self.read_char().unwrap());
+        }
+        Token::Comment(string)
+    }
+    fn lex_string(&mut self) -> Token {
+        let mut s = String::new();
+        loop {
+            match self.read_char() {
+                Some('"') => break,
+                Some(c) => s.push(c),
+                None => panic!("Unterminated strin literal"),
+            }
+        }
+        Token::Str(s)
+    }
     fn next_token(&mut self) -> Option<Token> {
         self.skip_whitespace();
         if let Some(c) = self.read_char() {
             let token = match c {
                 '0'..='9' => self.parse_int(c),
-                characters!() => self.parse_identifier(c),
-                '#' => {
-                    let mut string = String::new();
-                    while let Some(c) = self.peek_char() {
-                        if *c == '\n' {
-                            break;
-                        }
-                        string.push(self.read_char().unwrap());
-                    }
-                    Token::Comment(string)
-                }
+                characters!() => self.lex_identifier(c),
+                '#' => self.lex_comment(),
                 '=' => match self.peek_char()? {
                     '=' => Token::Equals,
                     _ => Token::Assign,
@@ -189,6 +202,7 @@ impl Lexer {
                 '.' => Token::Dot,
                 '!' => Token::Bang,
                 '@' => Token::At,
+                '"' => self.lex_string(),
                 _ => panic!("Unknown char {c}"),
             };
             return Some(token);

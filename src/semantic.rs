@@ -106,6 +106,7 @@ fn resolve_expr(
             }
             resolve_condition(condition, namespace, defined, locals);
         }
+        Expression::Str(_) => {}
     }
 }
 fn resolve_condition(

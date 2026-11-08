@@ -219,6 +219,7 @@ impl Parser {
                     else_block,
                 })
             }
+            Token::Str(s) => Ok(Expression::Str(s)),
             token => Err(ParseError::ExpectedExpression {
                 found: token.kind(),
             }),
@@ -353,9 +354,9 @@ impl Parser {
         match name.as_str() {
             "color" => {
                 self.expect(TokenKind::LParen)?;
-                let value = self.expect_identifier()?;
+                let expr = self.parse_expr_stmt()?;
                 self.expect(TokenKind::RParen)?;
-                Ok(StyleInfo::color(format!("#{value}")))
+                Ok(StyleInfo::Color(expr))
             }
             _ => Err(ParseError::IncorrectStyleInfo),
         }

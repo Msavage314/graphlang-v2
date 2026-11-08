@@ -36,6 +36,7 @@ pub enum Statement {
         stmt: Box<Statement>,
     },
 }
+
 impl ToLatex for Statement {
     fn to_latex(&self) -> String {
         match self {
@@ -65,13 +66,16 @@ impl ToLatex for Statement {
         }
     }
 }
+
 impl Statement {
-    fn inner(&self) -> &Statement {
+    /// Returns a reference to the inner of this [`Statement`].
+    fn _inner(&self) -> &Statement {
         match self {
-            Statement::Annotated { stmt: body, .. } => body.inner(),
+            Statement::Annotated { stmt: body, .. } => body._inner(),
             s => s,
         }
     }
+    /// Returns a mutable reference to the inner of this [`Statement`].
     pub fn inner_mut(&mut self) -> &mut Statement {
         match self {
             Statement::Annotated { stmt, .. } => stmt.inner_mut(),
@@ -109,6 +113,7 @@ pub enum Expression {
         block: Box<Expression>,
         else_block: Option<Box<Expression>>,
     },
+    Str(String),
 }
 
 impl ToLatex for Expression {
@@ -191,9 +196,11 @@ impl ToLatex for Expression {
                     format!("\\left\\{{ {condition}: {block}\\right\\}}",)
                 }
             }
+            Expression::Str(_) => panic!("String can only be used as an annotation arguments"),
         }
     }
 }
+
 #[derive(Debug, Clone)]
 pub struct Condition {
     pub left: Box<Expression>,
@@ -217,7 +224,6 @@ pub enum BinaryOp {
     Divide,
     Pow,
 }
-
 impl ToLatex for BinaryOp {
     fn to_latex(&self) -> String {
         match self {
@@ -229,6 +235,7 @@ impl ToLatex for BinaryOp {
         }
     }
 }
+
 #[derive(Debug, Clone)]
 pub enum CompareOp {
     Equal,
@@ -248,7 +255,8 @@ impl ToLatex for CompareOp {
         }
     }
 }
+
 #[derive(Debug, Clone)]
 pub enum StyleInfo {
-    color(String),
+    Color(Expression),
 }

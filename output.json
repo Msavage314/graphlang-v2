@@ -68,6 +68,12 @@
         "folderId": "2",
         "color": "#3b8b2e",
         "latex": "A_{Centre} = \\left(A_{Xpos},A_{Ypos}\\right)"
+      },
+      {
+        "type": "expression",
+        "id": "9",
+        "color": "#3b8b2e",
+        "latex": "a\\left(x\\right)=a"
       }
     ]
   },

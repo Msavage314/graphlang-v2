@@ -7,13 +7,10 @@ macro Rectangle($name, $x, $y, $w, $h){
         Ypos = $y
         Width = $w
         Height = $h
-
         polygon((Xpos - (Width / 2), Ypos - (Height / 2)),(Xpos + (Width / 2), Ypos - (Height /2 )),(Xpos + (Width / 2), Ypos + (Height /2 )),(Xpos - (Width / 2), Ypos + (Height /2 )))
-        
         Centre = (Xpos,Ypos)
     }
 }
 
 Rectangle!(A,1,1,1,1)
-
-
+fn a(x) = a
