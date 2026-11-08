@@ -324,10 +324,7 @@ impl Parser {
             TokenKind::LessThan => CompareOp::LessThan,
             TokenKind::LessThanOrEqual => CompareOp::LessThanOrEqual,
             kind => {
-                return Err(ParseError::UnexpectedToken {
-                    expected: TokenKind::Equals,
-                    found: kind,
-                });
+                return Err(ParseError::ExpectedComparisonOperator { found: kind });
             }
         };
         self.advance();
